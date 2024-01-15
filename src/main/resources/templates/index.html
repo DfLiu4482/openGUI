@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-icons.min.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/fileinput.min.css}">
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/fileinput.min.js}"></script>
+    <style>
+        .ibox{
+            background-color: white;
+            padding: 30px;
+        }
+        .container{
+            padding: 50px 0;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f3f4">
+
+    <div class="container">
+        <div class="row" style="justify-content:center">
+            <div class="col-sm-6 ibox">
+                <form id="myForm">
+                    <!-- 输入 -->
+
+                    <div class="form-group row" th:each="item : ${config.input}">
+                        <label class="col-sm-3" th:for="${item.name}" th:text="${item.name}"></label>
+
+                        <div class="col-sm-9" th:if="${item.type=='file'}">
+                            <input type="file" name="file" class="form-control-file" th:id="${item.name}"/>
+                            <input type="hidden" th:name="${item.name}"/>
+                            <script th:inline="javascript">
+                                $("#"+[[${item.name}]]).fileinput({
+                                    showPreview: false,
+                                    showUpload: false,
+                                    showRemove: false,
+                                    uploadUrl: "/uploadConfig"
+                                }).on("filebatchselected", function(event, files) {
+                                    $("#"+[[${item.name}]]).fileinput("upload");
+                                }).on("fileuploaded", function (event, data, previewId, index) {
+                                    $("input[name='"+[[${item.name}]]+"']").val(data.response.path);
+                                });
+                            </script>
+                        </div>
+
+                        <div class="col-sm-9" th:if="${item.type=='string'}">
+                            <input type="text" th:name="${item.name}" class="form-control" th:id="${item.name}"/>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+<script th:inline="javascript">
+
+    $(function (){
+
+        var inputs = [[${config.input}]];
+
+
+        $('#myForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = {};
+            inputs.forEach(function (value, index ){
+                formData[value.name] = $("input[name='"+value.name+"']").val();
+            });
+
+            $.ajax({
+                url: "/startCal",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "post",
+                dataType: 'json',
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    alert("SUCCESS!")
+                }
+            })
+        });
+    })
+</script>
+</body>
+</html>
