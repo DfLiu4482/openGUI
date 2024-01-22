@@ -9,6 +9,7 @@
     <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/fileinput.min.js}"></script>
+    <script th:src="@{/js/echarts.min.js}"></script>
     <style>
         .ibox{
             background-color: white;
@@ -23,7 +24,7 @@
 
     <div class="container">
         <div class="row" style="justify-content:center">
-            <div class="col-sm-6 ibox">
+            <div class="col-sm-8 ibox">
                 <form id="myForm">
                     <!-- 输入 -->
 
@@ -52,8 +53,25 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-
                 </form>
+            </div>
+        </div>
+        <div class="row" style="justify-content:center; display: none" id="chat-row">
+            <div class="col-sm-8 ibox">
+                <div th:id="chat+${state.index}" th:each="item,state : ${config.chat}" style="width: 100%;height:400px;"></div>
+            </div>
+        </div>
+        <!-- loading -->
+        <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        正在计算，请稍后。。。<span id="result"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -63,10 +81,15 @@
 
     $(function (){
 
+        var options = [[${config.chat}]];
+
+
+
         var inputs = [[${config.input}]];
 
 
         $('#myForm').on('submit', function(e) {
+            $('#loading').modal('show');
             e.preventDefault();
 
             var formData = {};
@@ -84,11 +107,27 @@
                 dataType: 'json',
                 data: JSON.stringify(formData),
                 success: function(response) {
-                    alert("SUCCESS!")
+                    $('#loading').modal('hide');
+                    if (response.success){
+                        if (options){
+                            console.log(response.data);
+                            $("#chat-row").show();
+                            response.data.forEach(function (value, index){
+                                var chat = echarts.init(document.getElementById('chat'+index));
+                                chat.setOption(value);
+                            });
+                        }
+                    }else{
+                        alert("FAIL!");
+                    }
+
                 }
             })
         });
-    })
+    });
+
+
+
 </script>
 </body>
 </html>

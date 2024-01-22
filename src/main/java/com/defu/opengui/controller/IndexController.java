@@ -2,6 +2,7 @@ package com.defu.opengui.controller;
 
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.service.IndexService;
+import com.defu.opengui.utils.ReturnMsgUtil;
 import jakarta.annotation.Resource;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
@@ -60,11 +61,9 @@ public class IndexController {
     @PostMapping("/startCal")
     @ResponseBody
     public Map<String, Object> startCal(@RequestBody Map<String, Object> formData){
-        Map<String, Object> retMap = new HashMap<>();
 
-        indexService.execute(formData);
+        return indexService.execute(formData);
 
-        return retMap;
     }
 
     @GetMapping("/getConfigJson")

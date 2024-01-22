@@ -1,5 +1,6 @@
 package com.defu.opengui.entity;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,16 +12,25 @@ import java.util.List;
 @Component
 public class ConfigJson {
 
-    private String ExecuFile;
+    private String execFile;
     private List<ConfigInput> input;
     private ConfigOutput output;
+    private List<JSONObject> chat;
 
-    public String getExecuFile() {
-        return ExecuFile;
+    public List<JSONObject> getChat() {
+        return chat;
     }
 
-    public void setExecuFile(String execuFile) {
-        ExecuFile = execuFile;
+    public void setChat(List<JSONObject> chat) {
+        this.chat = chat;
+    }
+
+    public String getExecFile() {
+        return execFile;
+    }
+
+    public void setExecFile(String execFile) {
+        this.execFile = execFile;
     }
 
     public List<ConfigInput> getInput() {
@@ -42,9 +52,10 @@ public class ConfigJson {
     @Override
     public String toString() {
         return "ConfigJson{" +
-                "ExecuFile='" + ExecuFile + '\'' +
+                "execFile='" + execFile + '\'' +
                 ", input=" + input +
                 ", output=" + output +
+                ", chat=" + chat +
                 '}';
     }
 }
