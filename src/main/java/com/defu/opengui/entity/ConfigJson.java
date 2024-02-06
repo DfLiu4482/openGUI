@@ -12,10 +12,28 @@ import java.util.List;
 @Component
 public class ConfigJson {
 
+    private Integer order;
     private String execFile;
     private List<ConfigInput> input;
     private ConfigOutput output;
     private List<JSONObject> chat;
+    private ConfigResult result;
+
+    public ConfigResult getResult() {
+        return result;
+    }
+
+    public void setResult(ConfigResult result) {
+        this.result = result;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
 
     public List<JSONObject> getChat() {
         return chat;
@@ -52,10 +70,12 @@ public class ConfigJson {
     @Override
     public String toString() {
         return "ConfigJson{" +
-                "execFile='" + execFile + '\'' +
+                "order=" + order +
+                ", execFile='" + execFile + '\'' +
                 ", input=" + input +
                 ", output=" + output +
                 ", chat=" + chat +
+                ", result=" + result +
                 '}';
     }
 }

@@ -1,8 +1,8 @@
 package com.defu.opengui.controller;
 
 import com.defu.opengui.entity.ConfigJson;
+import com.defu.opengui.entity.ConfigList;
 import com.defu.opengui.service.IndexService;
-import com.defu.opengui.utils.ReturnMsgUtil;
 import jakarta.annotation.Resource;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
@@ -26,12 +26,12 @@ public class IndexController {
     private IndexService indexService;
 
     @Resource
-    private ConfigJson configJson;
+    private ConfigList configList;
 
     @GetMapping("/index")
     public String index(ModelMap mmap) {
-        System.out.println(configJson);
-        mmap.put("config", configJson);
+        System.out.println(configList);
+        mmap.put("config", configList.getConfigJsonList().get(0));
         return "index";
     }
 
@@ -69,7 +69,7 @@ public class IndexController {
     @GetMapping("/getConfigJson")
     @ResponseBody
     public ConfigJson getConfigJson(){
-        return configJson;
+        return configList.getConfigJsonList().get(0);
     }
 
 }

@@ -13,53 +13,62 @@
     <style>
         .ibox{
             background-color: white;
-            padding: 30px;
-        }
-        .container{
-            padding: 50px 0;
+            padding: 15px;
+            margin-bottom: 25px
         }
     </style>
 </head>
-<body style="background-color: #f3f3f4">
+<body style="background-color: #b4b4b7">
 
-    <div class="container">
+    <div class="" style="padding: 20px;">
         <div class="row" style="justify-content:center">
-            <div class="col-sm-8 ibox">
-                <form id="myForm">
-                    <!-- 输入 -->
+            <div class="col-sm-2">
+                <div class="ibox">
+                    <img src="/images/logo.png" style="width: 100%;height:145px;"/>
+                </div>
+            </div>
+            <div class="col-sm-10">
+                <div class="ibox">
+                    <form id="myForm">
+                        <!-- 输入 -->
 
-                    <div class="form-group row" th:each="item : ${config.input}">
-                        <label class="col-sm-3" th:for="${item.name}" th:text="${item.name}"></label>
+                        <div class="form-group row" th:each="item : ${config.input}">
+                            <label class="col-sm-3" th:for="${item.name}" th:text="${item.name}"></label>
 
-                        <div class="col-sm-9" th:if="${item.type=='file'}">
-                            <input type="file" name="file" class="form-control-file" th:id="${item.name}"/>
-                            <input type="hidden" th:name="${item.name}"/>
-                            <script th:inline="javascript">
-                                $("#"+[[${item.name}]]).fileinput({
-                                    showPreview: false,
-                                    showUpload: false,
-                                    showRemove: false,
-                                    uploadUrl: "/uploadConfig"
-                                }).on("filebatchselected", function(event, files) {
-                                    $("#"+[[${item.name}]]).fileinput("upload");
-                                }).on("fileuploaded", function (event, data, previewId, index) {
-                                    $("input[name='"+[[${item.name}]]+"']").val(data.response.path);
-                                });
-                            </script>
+                            <div class="col-sm-9" th:if="${item.type=='file'}">
+                                <input type="file" name="file" class="form-control-file" th:id="${item.name}"/>
+                                <input type="hidden" th:name="${item.name}"/>
+                                <script th:inline="javascript">
+                                    $("#"+[[${item.name}]]).fileinput({
+                                        showPreview: false,
+                                        showUpload: false,
+                                        showRemove: false,
+                                        uploadUrl: "/uploadConfig"
+                                    }).on("filebatchselected", function(event, files) {
+                                        $("#"+[[${item.name}]]).fileinput("upload");
+                                    }).on("fileuploaded", function (event, data, previewId, index) {
+                                        $("input[name='"+[[${item.name}]]+"']").val(data.response.path);
+                                    });
+                                </script>
+                            </div>
+
+                            <div class="col-sm-9" th:if="${item.type=='string'}">
+                                <input type="text" th:name="${item.name}" class="form-control" th:id="${item.name}"/>
+                            </div>
+
                         </div>
 
-                        <div class="col-sm-9" th:if="${item.type=='string'}">
-                            <input type="text" th:name="${item.name}" class="form-control" th:id="${item.name}"/>
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="row" style="justify-content:center; display: none" id="chat-row">
-            <div class="col-sm-8 ibox">
-                <div th:id="chat+${state.index}" th:each="item,state : ${config.chat}" style="width: 100%;height:400px;"></div>
-            </div>
+        <div class="row" style="justify-content:center; display: none;" id="chat-row">
+        </div>
+        <div class="row" style="justify-content:center; display: none;" id="result-row">
+
         </div>
         <!-- loading -->
         <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
@@ -80,10 +89,6 @@
 <script th:inline="javascript">
 
     $(function (){
-
-        var options = [[${config.chat}]];
-
-
 
         var inputs = [[${config.input}]];
 
@@ -109,24 +114,34 @@
                 success: function(response) {
                     $('#loading').modal('hide');
                     if (response.success){
-                        if (options){
+                        if (response.data){
                             console.log(response.data);
-                            $("#chat-row").show();
                             response.data.forEach(function (value, index){
-                                var chat = echarts.init(document.getElementById('chat'+index));
-                                chat.setOption(value);
+                                if (value.chat){
+                                    $("#chat-row").show();
+                                    // <div th:id="chat+${state.index}" th:each="item,state : ${config.chat}" style="width: 100%;height:400px;"></div>
+                                    value.chat.forEach(function (value1, index1){
+                                        $("#chat-row").append('<div class="col-sm-4"><div class="ibox"><div id="chat'+index1+'" style="width: 100%;height:400px;"></div></div></div>')
+                                        var chat = echarts.init(document.getElementById('chat'+index1));
+                                        chat.setOption(value1);
+                                    });
+                                }
+                                if (value.result){
+                                    $("#result-row").show();
+                                    value.result.forEach(function (value1, index1){
+                                        $("#result-row").append('<div class="col-sm-4"><div class="ibox"><img style="width: 100%;height:400px;" src="/images/'+value1+'"/></div></div>')
+                                    })
+                                }
                             });
+
                         }
                     }else{
                         alert("FAIL!");
                     }
-
                 }
             })
         });
     });
-
-
 
 </script>
 </body>
