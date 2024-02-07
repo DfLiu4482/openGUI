@@ -23,9 +23,9 @@ public class ConfigJson {
     // echarts图表的json
     private List<JSONObject> chat;
     // 结果文件的位置或者结果文件本身，如果是文件页面显示文件图片，如果是图片页面直接显示图片
-    private String result;
+    private ConfigResult result;
     // 需要显示的表格，目前是txt格式的数据
-    private String table;
+    private ConfigTable table;
 
     public String getOutput() {
         return output;
@@ -35,20 +35,20 @@ public class ConfigJson {
         this.output = output;
     }
 
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getResult() {
+    public ConfigResult getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(ConfigResult result) {
         this.result = result;
+    }
+
+    public ConfigTable getTable() {
+        return table;
+    }
+
+    public void setTable(ConfigTable table) {
+        this.table = table;
     }
 
     public Integer getOrder() {
@@ -91,8 +91,8 @@ public class ConfigJson {
                 ", input=" + input +
                 ", output='" + output + '\'' +
                 ", chat=" + chat +
-                ", result='" + result + '\'' +
-                ", table='" + table + '\'' +
+                ", result=" + result +
+                ", table=" + table +
                 '}';
     }
 }

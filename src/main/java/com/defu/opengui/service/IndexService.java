@@ -96,13 +96,13 @@ public class IndexService {
                     retData.put("chat", chatRes);
                 }
                 // 解析结果
-                if (StringUtils.hasText(configJson.getResult())){
-                    List<String> fileNames = analyzeResult.analyze(configJson.getResult());
+                if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
+                    List<String> fileNames = analyzeResult.analyze(configJson.getResult().getPath());
                     retData.put("result", fileNames);
                 }
                 // 解析表格
-                if (StringUtils.hasText(configJson.getTable())){
-                    final Map<String, Object> table = analyzeTable.analyze(configJson.getTable());
+                if (!ObjectUtils.isEmpty(configJson.getTable()) && StringUtils.hasText(configJson.getTable().getPath())){
+                    final Map<String, Object> table = analyzeTable.analyze(configJson.getTable().getPath());
                     retData.put("table", table);
                 }
 
