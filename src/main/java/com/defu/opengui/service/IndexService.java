@@ -4,22 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.defu.opengui.entity.ConfigInput;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
-import com.defu.opengui.utils.FileTypeChecker;
-import com.defu.opengui.utils.PathUtils;
 import com.defu.opengui.utils.ReturnMsgUtil;
 import com.defu.opengui.utils.TerminalUtil;
 import jakarta.annotation.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,11 +31,13 @@ public class IndexService {
     private AnalyzeChat analyzeChat;
 
     @Resource
-    private ResourceLoader resourceLoader;
+    private AnalyzeResult analyzeResult;
+
+    @Resource
+    private AnalyzeTable analyzeTable;
+
 
     public Map<String, Object> execute(Map<String, Object> input){
-
-
 
         List<Map<String, Object>> retList = new ArrayList<>();
 
@@ -95,50 +89,17 @@ public class IndexService {
                     List<JSONObject> chatRes = analyzeChat.analyze(chat);
                     retData.put("chat", chatRes);
                 }
+                // 解析结果
                 if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
-                    // 将结果文件放在result里面供外部展示或下载
-                    File directory = new File(configJson.getResult().getPath());
-                    List<String> fileNames = new ArrayList<>();
-                    // 判断是文件还是路径
-                    if (directory.isDirectory()){
-                        final File[] files = directory.listFiles();
-
-                        // 遍历文件数组
-                        for (File file : files) {
-                            fileNames.add(file.getName());
-                            // 构建源文件路径
-                            Path sourcePath = Paths.get(file.getAbsolutePath());
-                            // 构建目标文件路径
-                            try {
-                                Path targetPath = Paths.get(resourceLoader.getResource("classpath:/static/images").getURL().getPath(), file.getName());
-                                // 拷贝文件到目标目录
-                                Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                throw new RuntimeException("获取结果异常！");
-                            }
-                        }
-                    }else if (directory.isFile()){
-                        if(FileTypeChecker.isImageFile(directory)){
-                            fileNames.add(directory.getName());
-                        }else{
-                            fileNames.add("file.jpeg");
-                        }
-
-                        Path sourcePath =  Paths.get(directory.getAbsolutePath());
-                        // 构建目标文件路径
-                        try {
-                            Path targetPath = Paths.get(resourceLoader.getResource("classpath:/static/images").getURL().getPath(), directory.getName());
-                            // 拷贝文件到目标目录
-                            Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            throw new RuntimeException("获取结果异常！");
-                        }
-                    }
-
+                    List<String> fileNames = analyzeResult.analyze(configJson.getResult());
                     retData.put("result", fileNames);
                 }
+                // 解析表格
+                if (StringUtils.hasText(configJson.getTable())){
+                    final Map<String, Object> table = analyzeTable.analyze(configJson.getTable());
+                    retData.put("table", table);
+                }
+
             }else{
                 throw new RuntimeException("计算失败！");
             }

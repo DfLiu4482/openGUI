@@ -1,0 +1,83 @@
+[
+
+    {
+        "order": 0,
+        "execFile" : "/Users/defuliu/workspace/IdeaProjects/openGUI/config/str8rzr_osX_M1",
+        "input" : [
+            {
+                "name": "fileConfig",
+                "type": "file",
+                "param": "-c"
+            },
+            {
+                "name": "fq",
+                "type": "file"
+            }
+
+        ],
+        "output": {
+            "name": "allsequences.txt",
+            "path":"/Users/defuliu/workspace/IdeaProjects/openGUI/data/result",
+            "param":">",
+            "type": "file"
+        },
+        "chat": [
+            {
+                "xAxis": {
+                    "type": "category",
+                    "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                },
+                "yAxis": {
+                    "type": "value"
+                },
+                "series": [
+                    {
+                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/bar.txt}",
+                        "type": "bar"
+                    }
+                ]
+            },
+            {
+                "xAxis": {},
+                "yAxis": {},
+                "series": [
+                    {
+                        "symbolSize": 20,
+                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/scatter.txt}",
+                        "type": "scatter"
+                    }
+                ]
+            },
+            {
+                "xAxis": {
+                    "type": "category",
+                    "data": [
+                        "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+                    ]
+                },
+                "yAxis": {
+                    "type": "value"
+                },
+                "series": [
+                    {
+                        "data": [150, 230, 224, 218, 135, 147, 260],
+                        "type": "line"
+                    }
+                ]
+            }
+        ],
+        "result": {
+            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/allsequences.txt"
+        }
+    },
+    {
+        "order": 1,
+        "execFile" : "Rscript /Users/defuliu/research/STRaitRazor/STA_figures/Figures.R",
+        "input": [],
+        "output": {},
+        "chat": [],
+        "result": {
+            "path": "/Users/defuliu/research/STRaitRazor/STA_figures/figuresdata/output2/figuretest"
+        }
+    }
+]

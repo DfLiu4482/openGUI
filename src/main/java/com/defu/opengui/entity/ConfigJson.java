@@ -18,6 +18,15 @@ public class ConfigJson {
     private ConfigOutput output;
     private List<JSONObject> chat;
     private ConfigResult result;
+    private String table;
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
 
     public ConfigResult getResult() {
         return result;
@@ -76,6 +85,7 @@ public class ConfigJson {
                 ", output=" + output +
                 ", chat=" + chat +
                 ", result=" + result +
+                ", table='" + table + '\'' +
                 '}';
     }
 }

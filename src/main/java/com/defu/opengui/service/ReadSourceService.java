@@ -47,4 +47,9 @@ public class ReadSourceService {
         return data;
     }
 
+    public static List<String> readLinesData(String path) throws IOException {
+        final List<String> strings = Files.readAllLines(Paths.get(path));
+        return strings;
+    }
+
 }
