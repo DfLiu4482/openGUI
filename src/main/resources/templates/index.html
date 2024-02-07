@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/fileinput.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-table.min.css}">
     <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/fileinput.min.js}"></script>
     <script th:src="@{/js/echarts.min.js}"></script>
     <script th:src="@{/js/bootstrap-table.min.js}"></script>
@@ -17,6 +17,12 @@
             background-color: white;
             padding: 15px;
             margin-bottom: 25px
+        }
+        .colStyle {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 70px;
         }
     </style>
 </head>
@@ -135,7 +141,7 @@
         function chat(data){
             var no = Date.now()
             data.forEach(function (value1, index1){
-                $("#data-row").append('<div class="col-sm-4"><div class="ibox"><div id="chat'+index1+no+'" style="width: 100%;height:400px;"></div></div></div>')
+                $("#data-row").append('<div class="col-sm-4"><div class="ibox"><div id="chat'+index1+no+'" style="width: 100%;height:403px;"></div></div></div>')
                 var chat = echarts.init(document.getElementById('chat'+index1+no));
                 chat.setOption(value1);
             });
@@ -143,27 +149,50 @@
         // 生成结果，图片或者文件
         function result(data){
             data.forEach(function (value1, index1){
-                $("#data-row").append('<div class="col-sm-4"><div class="ibox"><img style="width: 100%;height:400px;" src="/images/'+value1+'"/></div></div>')
+                $("#data-row").append('<div class="col-sm-4"><div class="ibox"><img style="width: 100%;height:403px;" src="/images/'+value1+'"/></div></div>')
             })
         }
 
         // 生成表格
         function table(data){
+            console.log(data.columns);
+            data.columns.forEach(function (value,index){
+                value['width'] = 60;
+                value['class'] = 'colStyle';
+                value['formatter'] = paramsMatter;
+            });
+            console.log(data.columns)
             var no = Date.now()
             var options = {
+                columns: data.columns,
                 data: data.data,
-                search: true,
+                search: false,
                 searchOnEnterKey: true,
                 pagination: true,
                 paginationLoop: true,
-                pageSize: 5,
+                pageSize: 6,
                 pageNumber: 1,
-                columns: data.columns
+                pageList: [6, 12, 24]
             };
-            $("#data-row").append('<div class="col-sm-8"><div class="ibox"><table id="myTable'+no+'" style="width: 100%;height:400px;"></table></div></div>');
+            $("#data-row").append('<div class="col-sm-8"><div class="ibox"><table style="table-layout:fixed;" id="myTable'+no+'"></table></div></div>');
             $('#myTable'+no).bootstrapTable(options);
         }
 
+        var paramsMatter = function paramsMatter(value, row, index) {
+            //获取备注内容
+            //判断备注内容是否为空，为空则设置为空字符
+            if (value == null) {
+                value = "";
+            }
+            //自定义单元格内容
+            var span = document.createElement('span');
+            //写入面板标题
+            span.setAttribute('title', value);
+            //写入面板内容
+            span.innerHTML = value;
+            //将面板返回至单元格展示
+            return span.outerHTML;
+        }
     });
 
 </script>

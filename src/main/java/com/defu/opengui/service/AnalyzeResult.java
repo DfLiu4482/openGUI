@@ -1,6 +1,5 @@
 package com.defu.opengui.service;
 
-import com.defu.opengui.entity.ConfigResult;
 import com.defu.opengui.utils.FileTypeChecker;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -25,8 +24,8 @@ public class AnalyzeResult {
     @Resource
     private ResourceLoader resourceLoader;
 
-    public List<String> analyze(ConfigResult result){
-        File directory = new File(result.getPath());
+    public List<String> analyze(String path){
+        File directory = new File(path);
         List<String> fileNames = new ArrayList<>();
         // 判断是文件还是路径
         if (directory.isDirectory()){

@@ -8,6 +8,7 @@ import com.defu.opengui.utils.ReturnMsgUtil;
 import com.defu.opengui.utils.TerminalUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
@@ -45,10 +46,13 @@ public class IndexService {
         configJsonList.forEach(configJson -> {
             Map<String, Object> retData = new HashMap<>();
             String software = configJson.getExecFile();
+            if (!StringUtils.hasText(software)){
+                return;
+            }
 
             // 创建输出路径
-            if (!ObjectUtils.isEmpty(configJson.getOutput()) && StringUtils.hasText(configJson.getOutput().getPath())){
-                File result = new File(configJson.getOutput().getPath());
+            if (StringUtils.hasText(configJson.getOutput())){
+                File result = new File(configJson.getOutput());
                 if (!result.exists()){
                     result.mkdirs();
                 }
@@ -56,27 +60,29 @@ public class IndexService {
 
             // 拼接输入参数
             StringBuilder inputParam  = new StringBuilder();
-            if (!ObjectUtils.isEmpty(configJson.getInput())){
+            if (!ObjectUtils.isEmpty(configJson.getInput()) && !CollectionUtils.isEmpty(configJson.getInput())){
                 for (ConfigInput configInput : configJson.getInput()){
-                    if (configInput.getParam()!=null)
+                    if (configInput.getParam()!=null){
                         inputParam.append(" " + configInput.getParam());
-                    inputParam.append(" " + input.get(configInput.getName()));
-                }
-            }
+                    }
+                    if (StringUtils.hasText(configInput.getValue())){
+                        inputParam.append(" " + configInput.getValue());
+                    }else{
+                        inputParam.append(" " + input.get(configInput.getName()));
+                    }
 
-            // 拼接输出参数
-            StringBuilder outputParam = new StringBuilder();
-            if (configJson.getOutput()!=null){
-                outputParam.append(" "+ configJson.getOutput().getParam());
-                outputParam.append(" " + configJson.getOutput().getPath() + File.separator);
-                outputParam.append(configJson.getOutput().getName());
+                }
             }
 
             // 调用命令
             final ReturnMsgUtil returnMsgUtil;
             try {
-                returnMsgUtil = TerminalUtil.execCmd(software +
-                        inputParam + outputParam, null);
+                String cmd = "";
+                if (StringUtils.hasText(configJson.getOutput())){
+                    cmd = "cd "+configJson.getOutput()+" && ";
+                }
+                cmd += software + inputParam;
+                returnMsgUtil = TerminalUtil.execCmd(cmd, null);
             } catch (Exception e) {
                 throw new RuntimeException("计算异常！");
             }
@@ -90,7 +96,7 @@ public class IndexService {
                     retData.put("chat", chatRes);
                 }
                 // 解析结果
-                if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
+                if (StringUtils.hasText(configJson.getResult())){
                     List<String> fileNames = analyzeResult.analyze(configJson.getResult());
                     retData.put("result", fileNames);
                 }
