@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>openGUI</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-icons.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/fileinput.min.css}">
@@ -122,13 +122,12 @@
                             if (value.table){
                                 table(value.table);
                             }
-                            if (value.chat){
-                                chat(value.chat);
+                            if (value.chart){
+                                chat(value.chart);
                             }
                             if (value.result){
                                 result(value.result);
                             }
-
                         });
                     }else{
                         alert("FAIL!");

@@ -1,6 +1,5 @@
 package com.defu.opengui.entity;
 
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,11 +20,19 @@ public class ConfigJson {
     // 结果输出位置，如果命令行工具没有指定输出位置的功能，则可以用这个参数来指定命令行执行的位置
     private String output;
     // echarts图表的json
-    private List<JSONObject> chat;
+    private List<ConfigChart> charts;
     // 结果文件的位置或者结果文件本身，如果是文件页面显示文件图片，如果是图片页面直接显示图片
     private ConfigResult result;
     // 需要显示的表格，目前是txt格式的数据
     private ConfigTable table;
+
+    public List<ConfigChart> getCharts() {
+        return charts;
+    }
+
+    public void setChats(List<ConfigChart> charts) {
+        this.charts = charts;
+    }
 
     public String getOutput() {
         return output;
@@ -59,14 +66,6 @@ public class ConfigJson {
         this.order = order;
     }
 
-    public List<JSONObject> getChat() {
-        return chat;
-    }
-
-    public void setChat(List<JSONObject> chat) {
-        this.chat = chat;
-    }
-
     public String getExecFile() {
         return execFile;
     }
@@ -90,7 +89,7 @@ public class ConfigJson {
                 ", execFile='" + execFile + '\'' +
                 ", input=" + input +
                 ", output='" + output + '\'' +
-                ", chat=" + chat +
+                ", charts=" + charts +
                 ", result=" + result +
                 ", table=" + table +
                 '}';

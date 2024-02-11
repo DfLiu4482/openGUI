@@ -1,0 +1,26 @@
+{
+  "toolbox": {
+    "show": true,
+    "feature": {
+      "saveAsImage":{
+        "type": "png"
+      },
+      "magicType": {
+        "type": ["line", "bar"]
+      }
+    }
+  },
+  "xAxis": {
+    "type": "category",
+    "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+  },
+  "yAxis": {
+    "type": "value"
+  },
+  "series": [
+    {
+      "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/line.txt}",
+      "type": "line"
+    }
+  ]
+},

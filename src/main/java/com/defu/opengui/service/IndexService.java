@@ -1,6 +1,7 @@
 package com.defu.opengui.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.defu.opengui.entity.ConfigChart;
 import com.defu.opengui.entity.ConfigInput;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
@@ -29,7 +30,7 @@ public class IndexService {
     private ConfigList configList;
 
     @Resource
-    private AnalyzeChat analyzeChat;
+    private AnalyzeChart analyzeChat;
 
     @Resource
     private AnalyzeResult analyzeResult;
@@ -90,10 +91,10 @@ public class IndexService {
             // 解析结果
             if (returnMsgUtil.getSuccess()){
                 //解析画图
-                if (!ObjectUtils.isEmpty(configJson.getChat()) && !configJson.getChat().isEmpty()){
-                    final List<JSONObject> chat = configJson.getChat();
-                    List<JSONObject> chatRes = analyzeChat.analyze(chat);
-                    retData.put("chat", chatRes);
+                if (!ObjectUtils.isEmpty(configJson.getCharts()) && !CollectionUtils.isEmpty(configJson.getCharts())){
+                    final List<ConfigChart> chart = configJson.getCharts();
+                    List<JSONObject> chartRes = analyzeChat.analyze(chart);
+                    retData.put("chart", chartRes);
                 }
                 // 解析结果
                 if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){

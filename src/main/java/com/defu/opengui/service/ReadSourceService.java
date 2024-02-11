@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
+import com.defu.opengui.utils.PathUtils;
 import org.springframework.boot.system.ApplicationHome;
 
 import java.io.File;
@@ -24,9 +25,7 @@ import java.util.stream.Collectors;
 public class ReadSourceService {
 
     public ConfigList readConfig() throws IOException {
-        ApplicationHome home = new ApplicationHome(getClass());
-        File jarFile = home.getSource();
-        final String path = jarFile.getParentFile().getPath();
+        final String path = PathUtils.getJarPath();
 
         ConfigList configList = new ConfigList();
         List<ConfigJson> configJsons = new ArrayList<>();

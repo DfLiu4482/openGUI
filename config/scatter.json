@@ -1,0 +1,17 @@
+{
+  "toolbox": {
+    "feature": {
+      "saveAsImage":{
+        "type": "png"
+      }
+    }
+  },
+  "xAxis": {},
+  "yAxis": {},
+  "series": [
+    {
+      "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/scatter.txt}",
+      "type": "scatter"
+    }
+  ]
+}

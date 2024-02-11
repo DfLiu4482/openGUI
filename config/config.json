@@ -1,8 +1,6 @@
 [
-
     {
         "order": 0,
-        "execFile" : "/Users/defuliu/workspace/IdeaProjects/openGUI/config/str8rzr_osX_M1",
         "input" : [
             {
                 "name": "fileConfig",
@@ -11,70 +9,105 @@
             },
             {
                 "name": "fq",
-                "type": "file"
+                "type": "file",
+                "param": ""
+            },
+            {
+                "name": "testString",
+                "type": "string",
+                "param": "-s"
+            }
+
+        ]
+    },
+    {
+        "order": 1,
+        "execFile": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/str8rzr_osX_M1",
+        "input" : [
+            {
+                "name": "fileConfig",
+                "type": "file",
+                "param": "-c",
+                "value": ""
+            },
+            {
+                "name": "fq",
+                "type": "file",
+                "param": "",
+                "value": ""
+            },
+            {
+                "name": "allsequences.txt",
+                "type": "string",
+                "param":">",
+                "value":"/Users/defuliu/workspace/IdeaProjects/openGUI/result/allsequences.txt"
             }
 
         ],
-        "output": {
-            "name": "allsequences.txt",
-            "path":"/Users/defuliu/workspace/IdeaProjects/openGUI/data/result",
-            "param":">",
-            "type": "file"
-        },
+        "output": "/Users/defuliu/workspace/IdeaProjects/openGUI/target",
         "chat": [
+            {
+                "type": "bar",
+                "data": "${/data.txt}"
+            },
+            {
+                "type": "line",
+                "data": "${/data.txt}"
+            }
+        ],
+        "charts": [
             {
                 "xAxis": {
                     "type": "category",
                     "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
                 },
-                "yAxis": {
-                    "type": "value"
-                },
                 "series": [
                     {
-                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/bar.txt}",
+                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt}",
                         "type": "bar"
+                    },
+                    {
+                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt}",
+                        "type": "line"
                     }
-                ]
+                ],
+                "chart": {}
             },
             {
                 "xAxis": {},
-                "yAxis": {},
-                "series": [
-                    {
-                        "symbolSize": 20,
-                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/scatter.txt}",
-                        "type": "scatter"
-                    }
-                ]
-            },
-            {
-                "xAxis": {
-                    "type": "category",
-                    "data": [
-                        "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"
+                "series": [],
+                "chart": {
+                    "toolbox": {
+                        "feature": {
+                            "saveAsImage":{
+                                "type": "png"
+                            }
+                        }
+                    },
+                    "xAxis": {},
+                    "yAxis": {},
+                    "series": [
+                        {
+                            "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/scatter.txt}",
+                            "type": "scatter"
+                        }
                     ]
-                },
-                "yAxis": {
-                    "type": "value"
-                },
-                "series": [
-                    {
-                        "data": [150, 230, 224, 218, 135, 147, 260],
-                        "type": "line"
-                    }
-                ]
+                }
+
             }
         ],
         "result": {
-            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/result/allsequences.txt"
+            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/result/allsequences.txt"
+        },
+        "table": {
+            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/allsequences.txt"
         }
     },
     {
-        "order": 1,
+        "order": 2,
         "execFile" : "Rscript /Users/defuliu/research/STRaitRazor/STA_figures/Figures.R",
         "input": [],
-        "output": {},
+        "output": "",
         "chat": [],
         "result": {
             "path": "/Users/defuliu/research/STRaitRazor/STA_figures/figuresdata/output2/figuretest"

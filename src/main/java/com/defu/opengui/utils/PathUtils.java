@@ -1,7 +1,6 @@
 package com.defu.opengui.utils;
 
 import org.springframework.boot.system.ApplicationHome;
-import org.springframework.core.io.Resource;
 
 import java.io.File;
 
@@ -14,6 +13,9 @@ public class PathUtils {
     public static String  getJarPath(){
         ApplicationHome home = new ApplicationHome(PathUtils.class);
         File jarFile = home.getSource();
+        if(jarFile.isDirectory()){
+            return jarFile.getParentFile().getParentFile().getPath();
+        }
         return jarFile.getParentFile().getPath();
     }
 

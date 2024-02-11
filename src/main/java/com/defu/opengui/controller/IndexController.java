@@ -3,6 +3,7 @@ package com.defu.opengui.controller;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
 import com.defu.opengui.service.IndexService;
+import com.defu.opengui.utils.PathUtils;
 import jakarta.annotation.Resource;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Controller;
@@ -42,9 +43,7 @@ public class IndexController {
 
         Map<String, Object> retMap = new HashMap<>();
         if (!file.isEmpty()) {
-            ApplicationHome home = new ApplicationHome(getClass());
-            File jarFile = home.getSource();
-            String path = jarFile.getParentFile().getPath()+"/upload/";
+            String path = PathUtils.getJarPath()+"/upload/";
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
 
