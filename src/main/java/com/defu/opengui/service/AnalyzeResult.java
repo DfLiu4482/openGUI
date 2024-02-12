@@ -1,6 +1,7 @@
 package com.defu.opengui.service;
 
 import com.defu.opengui.utils.FileTypeChecker;
+import com.defu.opengui.utils.PathUtils;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -57,14 +58,18 @@ public class AnalyzeResult {
 
     private void copyResource(File file){
         Path sourcePath =  Paths.get(file.getAbsolutePath());
+        File path =new File(PathUtils.getJarPath()+"/temp");
+        if (!path.isDirectory()){
+            path.mkdirs();
+        }
         // 构建目标文件路径
         try {
-            Path targetPath = Paths.get(resourceLoader.getResource("classpath:/static/images").getURL().getPath(), file.getName());
+            Path targetPath = Paths.get(PathUtils.getJarPath()+"/temp", file.getName());
             // 拷贝文件到目标目录
             Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("获取结果异常！");
+            throw new RuntimeException("Fetch result exception！");
         }
     }
 }

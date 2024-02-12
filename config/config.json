@@ -45,16 +45,6 @@
 
         ],
         "output": "/Users/defuliu/workspace/IdeaProjects/openGUI/target",
-        "chat": [
-            {
-                "type": "bar",
-                "data": "${/data.txt}"
-            },
-            {
-                "type": "line",
-                "data": "${/data.txt}"
-            }
-        ],
         "charts": [
             {
                 "xAxis": {
@@ -67,7 +57,7 @@
                         "type": "bar"
                     },
                     {
-                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt}",
+                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/line.txt}",
                         "type": "line"
                     }
                 ],
@@ -100,7 +90,7 @@
             "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/result/allsequences.txt"
         },
         "table": {
-            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/allsequences.txt"
+            "path": "/Users/defuliu/workspace/IdeaProjects/openGUI/result/allsequences.txt"
         }
     },
     {

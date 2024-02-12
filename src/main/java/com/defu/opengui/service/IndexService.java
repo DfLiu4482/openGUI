@@ -5,6 +5,7 @@ import com.defu.opengui.entity.ConfigChart;
 import com.defu.opengui.entity.ConfigInput;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
+import com.defu.opengui.utils.ResponseResult;
 import com.defu.opengui.utils.ReturnMsgUtil;
 import com.defu.opengui.utils.TerminalUtil;
 import jakarta.annotation.Resource;
@@ -39,7 +40,7 @@ public class IndexService {
     private AnalyzeTable analyzeTable;
 
 
-    public Map<String, Object> execute(Map<String, Object> input){
+    public ResponseResult execute(Map<String, Object> input){
 
         List<Map<String, Object>> retList = new ArrayList<>();
 
@@ -85,7 +86,7 @@ public class IndexService {
                 cmd += software + inputParam;
                 returnMsgUtil = TerminalUtil.execCmd(cmd, null);
             } catch (Exception e) {
-                throw new RuntimeException("计算异常！");
+                throw new RuntimeException("Computation exception!");
             }
 
             // 解析结果
@@ -108,15 +109,12 @@ public class IndexService {
                 }
 
             }else{
-                throw new RuntimeException("计算失败！");
+                throw new RuntimeException("Computation fail！");
             }
             retList.add(retData);
         });
+        return ResponseResult.success(retList);
 
-        Map<String, Object> retMap = new HashMap<>();
-        retMap.put("success", 1);
-        retMap.put("data",retList);
-        return retMap;
     }
 
 }

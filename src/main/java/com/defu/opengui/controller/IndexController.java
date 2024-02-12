@@ -4,9 +4,8 @@ import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
 import com.defu.opengui.service.IndexService;
 import com.defu.opengui.utils.PathUtils;
+import com.defu.opengui.utils.ResponseResult;
 import jakarta.annotation.Resource;
-import org.springframework.boot.system.ApplicationHome;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileUrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -44,7 +43,7 @@ public class IndexController {
 
     @PostMapping("/uploadConfig")
     @ResponseBody
-    public Map<String, Object> uploadConfig(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseResult uploadConfig(@RequestParam("file") MultipartFile file) throws IOException {
 
         Map<String, Object> retMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -53,18 +52,14 @@ public class IndexController {
             if (!dir.exists()) dir.mkdirs();
 
             file.transferTo(new File(path+file.getOriginalFilename()));
-            // store the bytes somewhere
-            retMap.put("code", 200);
-            retMap.put("path", path + file.getOriginalFilename());
-            return retMap;
+            return ResponseResult.success(200, path + file.getOriginalFilename());
         }
-        retMap.put("code", 500);
-        return retMap;
+        return ResponseResult.fail();
     }
 
     @GetMapping("download/{fileName}")
     public ResponseEntity<org.springframework.core.io.Resource> downloadFile(@PathVariable String fileName) throws IOException {
-        org.springframework.core.io.Resource resource = new ClassPathResource("/static/images/"+fileName);
+        org.springframework.core.io.Resource resource = new FileUrlResource(PathUtils.getJarPath()+"/temp");
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName+"");
         return ResponseEntity.ok()
@@ -76,7 +71,7 @@ public class IndexController {
 
     @PostMapping("/startCal")
     @ResponseBody
-    public Map<String, Object> startCal(@RequestBody Map<String, Object> formData){
+    public ResponseResult startCal(@RequestBody Map<String, Object> formData){
 
         return indexService.execute(formData);
 

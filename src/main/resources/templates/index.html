@@ -56,7 +56,7 @@
                                     }).on("filebatchselected", function(event, files) {
                                         $("#"+[[${item.name}]]).fileinput("upload");
                                     }).on("fileuploaded", function (event, data, previewId, index) {
-                                        $("input[name='"+[[${item.name}]]+"']").val(data.response.path);
+                                        $("input[name='"+[[${item.name}]]+"']").val(data.response.message);
                                     });
                                 </script>
                             </div>
@@ -80,10 +80,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">提示</h4>
+                        <h4 class="modal-title" id="myModalLabel">Tips</h4>
                     </div>
                     <div class="modal-body">
-                        正在计算，请稍后。。。<span id="result"></span>
+                        Calculating, please wait...<span id="result"></span>
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 data: JSON.stringify(formData),
                 success: function(response) {
                     $('#loading').modal('hide');
-                    if (response.success && response.data){
+                    if (response.code == 200){
                         response.data.forEach(function (value, index){
                             if (value.table){
                                 table(value.table);
@@ -130,8 +130,11 @@
                             }
                         });
                     }else{
-                        alert("FAIL!");
+                        alert(response.message);
                     }
+                },
+                error: function(xhr, status, error) {
+                    alert("Calculation failure");
                 }
             })
         });

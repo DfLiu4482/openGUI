@@ -41,7 +41,7 @@ public class AnalyzeTable {
             return table;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("读取表格数据异常");
+            throw new RuntimeException("Description Table data failed to be read!");
         }
 
     }
