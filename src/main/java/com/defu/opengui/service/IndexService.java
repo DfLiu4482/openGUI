@@ -98,7 +98,7 @@ public class IndexService {
                 }
                 // 解析结果
                 if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
-                    List<String> fileNames = analyzeResult.analyze(configJson.getResult().getPath());
+                    List<Map<String, String>> fileNames = analyzeResult.analyze(configJson.getResult().getPath());
                     retData.put("result", fileNames);
                 }
                 // 解析表格

@@ -6,6 +6,11 @@ import com.defu.opengui.service.IndexService;
 import com.defu.opengui.utils.PathUtils;
 import jakarta.annotation.Resource;
 import org.springframework.boot.system.ApplicationHome;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileUrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +60,18 @@ public class IndexController {
         }
         retMap.put("code", 500);
         return retMap;
+    }
+
+    @GetMapping("download/{fileName}")
+    public ResponseEntity<org.springframework.core.io.Resource> downloadFile(@PathVariable String fileName) throws IOException {
+        org.springframework.core.io.Resource resource = new ClassPathResource("/static/images/"+fileName);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName+"");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
     @PostMapping("/startCal")

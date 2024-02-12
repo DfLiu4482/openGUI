@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: dfliu
@@ -24,23 +26,29 @@ public class AnalyzeResult {
     @Resource
     private ResourceLoader resourceLoader;
 
-    public List<String> analyze(String path){
+    public List<Map<String, String>> analyze(String path){
         File directory = new File(path);
-        List<String> fileNames = new ArrayList<>();
+        List<Map<String, String>> fileNames = new ArrayList<>();
         // 判断是文件还是路径
         if (directory.isDirectory()){
             final File[] files = directory.listFiles();
             // 遍历文件数组
             for (File file : files) {
-                fileNames.add(file.getName());
+                Map map = new HashMap();
+                map.put("name", file.getName());
+                map.put("src", file.getName());
+                fileNames.add(map);
                 copyResource(file);
             }
         }else if (directory.isFile()){
+            Map map = new HashMap();
             if(FileTypeChecker.isImageFile(directory)){
-                fileNames.add(directory.getName());
+                map.put("name", directory.getName());
             }else{
-                fileNames.add("file.jpeg");
+                map.put("name", "file.jpeg");
             }
+            map.put("src", directory.getName());
+            fileNames.add(map);
             copyResource(directory);
 
         }
