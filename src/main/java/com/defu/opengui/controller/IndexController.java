@@ -51,15 +51,16 @@ public class IndexController {
             File dir = new File(path);
             if (!dir.exists()) dir.mkdirs();
 
-            file.transferTo(new File(path+file.getOriginalFilename()));
-            return ResponseResult.success(200, path + file.getOriginalFilename());
+            String fileName = System.currentTimeMillis()+file.getOriginalFilename();
+            file.transferTo(new File(path + fileName));
+            return ResponseResult.success(path + fileName);
         }
         return ResponseResult.fail();
     }
 
     @GetMapping("download/{fileName}")
     public ResponseEntity<org.springframework.core.io.Resource> downloadFile(@PathVariable String fileName) throws IOException {
-        org.springframework.core.io.Resource resource = new FileUrlResource(PathUtils.getJarPath()+"/temp");
+        org.springframework.core.io.Resource resource = new FileUrlResource(PathUtils.getJarPath()+"/temp/"+fileName);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName+"");
         return ResponseEntity.ok()
