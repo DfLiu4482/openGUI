@@ -10,13 +10,22 @@ import java.io.File;
  **/
 public class PathUtils {
 
-    public static String  getJarPath(){
+    public static String getJarPath(){
         ApplicationHome home = new ApplicationHome(PathUtils.class);
         File jarFile = home.getSource();
         if(jarFile.isDirectory()){
             return jarFile.getParentFile().getParentFile().getPath();
         }
         return jarFile.getParentFile().getPath();
+    }
+
+    public static String getAbsolute(String path, String prefix){
+        File f = new File(path);
+        if (f.isAbsolute()) return path;
+        else{
+            File file = new File(prefix + File.separator + path);
+            return file.getAbsolutePath();
+        }
     }
 
 }

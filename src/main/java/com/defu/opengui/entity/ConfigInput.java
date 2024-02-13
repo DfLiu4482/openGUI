@@ -11,7 +11,7 @@ public class ConfigInput {
 
     // 参数的唯一标识
     private String name;
-    // 参数类型 file / string
+    // 参数类型 file / string / path 需要拼接
     private String type;
     // 执行命令时的参数如：-c
     private String param;

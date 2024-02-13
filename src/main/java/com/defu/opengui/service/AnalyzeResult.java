@@ -37,9 +37,9 @@ public class AnalyzeResult {
             for (File file : files) {
                 Map map = new HashMap();
                 map.put("name", file.getName());
-                map.put("src", file.getName());
+                map.put("src", file.getAbsolutePath());
                 fileNames.add(map);
-                copyResource(file);
+                //copyResource(file);
             }
         }else if (directory.isFile()){
             Map map = new HashMap();
@@ -48,9 +48,9 @@ public class AnalyzeResult {
             }else{
                 map.put("name", "file.jpeg");
             }
-            map.put("src", directory.getName());
+            map.put("src", directory.getAbsolutePath());
             fileNames.add(map);
-            copyResource(directory);
+            //copyResource(directory);
 
         }
         return fileNames;

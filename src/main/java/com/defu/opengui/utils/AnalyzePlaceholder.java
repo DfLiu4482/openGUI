@@ -1,6 +1,5 @@
 package com.defu.opengui.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.defu.opengui.service.ReadSourceService;
 
 import java.io.IOException;
@@ -13,11 +12,11 @@ import java.util.regex.Pattern;
  **/
 public class AnalyzePlaceholder {
 
-    public static String analyze(String data){
+    public static String analyze(String data, String prefix){
         Pattern pattern = Pattern.compile("\\$\\{(.*?)\\}");
         Matcher matcher = pattern.matcher(data);
         while (matcher.find()){
-            final String group = matcher.group(1);
+            final String group = PathUtils.getAbsolute(matcher.group(1), prefix);
             try {
                 final String dataRes = ReadSourceService.readData(group);
                 return dataRes;

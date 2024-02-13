@@ -5,6 +5,7 @@ import com.defu.opengui.entity.ConfigChart;
 import com.defu.opengui.entity.ConfigInput;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
+import com.defu.opengui.utils.PathUtils;
 import com.defu.opengui.utils.ResponseResult;
 import com.defu.opengui.utils.ReturnMsgUtil;
 import com.defu.opengui.utils.TerminalUtil;
@@ -44,6 +45,9 @@ public class IndexService {
 
         List<Map<String, Object>> retList = new ArrayList<>();
 
+        // 指定路径前缀
+        String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
+
         final List<ConfigJson> configJsonList = configList.getConfigJsonList();
         configJsonList.forEach(configJson -> {
             Map<String, Object> retData = new HashMap<>();
@@ -52,11 +56,12 @@ public class IndexService {
                 return;
             }
 
-            // 创建输出路径
+            // 输出路径
             if (StringUtils.hasText(configJson.getOutput())){
-                File result = new File(configJson.getOutput());
-                if (!result.exists()){
-                    result.mkdirs();
+                configJson.setOutput(PathUtils.getAbsolute(configJson.getOutput(), prefix));
+                File file = new File(configJson.getOutput());
+                if (!file.isDirectory()){
+                    file.mkdirs();
                 }
             }
 
@@ -66,6 +71,9 @@ public class IndexService {
                 for (ConfigInput configInput : configJson.getInput()){
                     if (configInput.getParam()!=null){
                         inputParam.append(" " + configInput.getParam());
+                    }
+                    if ("path".equals(configInput.getType()) && StringUtils.hasText(configInput.getValue())){
+                        configInput.setValue(PathUtils.getAbsolute(configInput.getValue(), prefix));
                     }
                     if (StringUtils.hasText(configInput.getValue())){
                         inputParam.append(" " + configInput.getValue());
@@ -94,16 +102,18 @@ public class IndexService {
                 //解析画图
                 if (!ObjectUtils.isEmpty(configJson.getCharts()) && !CollectionUtils.isEmpty(configJson.getCharts())){
                     final List<ConfigChart> chart = configJson.getCharts();
-                    List<JSONObject> chartRes = analyzeChat.analyze(chart);
+                    List<JSONObject> chartRes = analyzeChat.analyze(chart, prefix);
                     retData.put("chart", chartRes);
                 }
                 // 解析结果
                 if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
+                    configJson.getResult().setPath(PathUtils.getAbsolute(configJson.getResult().getPath(), prefix));
                     List<Map<String, String>> fileNames = analyzeResult.analyze(configJson.getResult().getPath());
                     retData.put("result", fileNames);
                 }
                 // 解析表格
                 if (!ObjectUtils.isEmpty(configJson.getTable()) && StringUtils.hasText(configJson.getTable().getPath())){
+                    configJson.getTable().setPath(PathUtils.getAbsolute(configJson.getTable().getPath(), prefix));
                     final Map<String, Object> table = analyzeTable.analyze(configJson.getTable().getPath());
                     retData.put("table", table);
                 }

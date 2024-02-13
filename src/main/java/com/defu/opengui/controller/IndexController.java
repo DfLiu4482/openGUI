@@ -58,11 +58,11 @@ public class IndexController {
         return ResponseResult.fail();
     }
 
-    @GetMapping("download/{fileName}")
-    public ResponseEntity<org.springframework.core.io.Resource> downloadFile(@PathVariable String fileName) throws IOException {
-        org.springframework.core.io.Resource resource = new FileUrlResource(PathUtils.getJarPath()+"/temp/"+fileName);
+    @GetMapping("/download")
+    public ResponseEntity<org.springframework.core.io.Resource> downloadFile(String fileName) throws IOException {
+        org.springframework.core.io.Resource resource = new FileUrlResource(fileName);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName+"");
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+resource.getFilename()+"");
         return ResponseEntity.ok()
                 .headers(headers)
                 .contentLength(resource.contentLength())

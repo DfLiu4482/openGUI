@@ -12,8 +12,6 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author: dfliu
@@ -22,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 public class AnalyzeChart {
 
-    public List<JSONObject>  analyze(List<ConfigChart> charts) {
+    public List<JSONObject>  analyze(List<ConfigChart> charts, String prefix) {
 
         String path = PathUtils.getJarPath()+"/config/chat.json";
         final JSONObject templateJson;
@@ -42,13 +40,13 @@ public class AnalyzeChart {
                 chart.getSeries().forEach(value->{
                     final JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(value));
                     final String data = jsonObject.getString("data");
-                    final String analyze = AnalyzePlaceholder.analyze(data);
+                    final String analyze = AnalyzePlaceholder.analyze(data, prefix);
                     jsonObject.put("data", JSONObject.parseArray(analyze));
                     seriesArray.add(jsonObject);
                 });
 
                 final String data = chart.getxAxis().getString("data");
-                final String analyze = AnalyzePlaceholder.analyze(data);
+                final String analyze = AnalyzePlaceholder.analyze(data, prefix);
                 chart.getxAxis().put("data", JSONObject.parseArray(analyze));
                 xAxisArray.add(chart.getxAxis());
                 templateJson.put("series", seriesArray);
@@ -59,7 +57,7 @@ public class AnalyzeChart {
                 chart.getChart().getJSONArray("series").forEach(value->{
                     final JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(value));
                     final String data = jsonObject.getString("data");
-                    final String analyze = AnalyzePlaceholder.analyze(data);
+                    final String analyze = AnalyzePlaceholder.analyze(data, prefix);
                     jsonObject.put("data", JSONObject.parseArray(analyze));
                     seriesArray.add(jsonObject);
                 });
@@ -68,7 +66,7 @@ public class AnalyzeChart {
                 if (!ObjectUtils.isEmpty(chart.getChart().getJSONObject("xAxis"))&&
                         StringUtils.hasText(chart.getChart().getJSONObject("xAxis").getString("data"))){
                     final String data = chart.getChart().getJSONObject("xAxis").getString("data");
-                    final String analyze = AnalyzePlaceholder.analyze(data);
+                    final String analyze = AnalyzePlaceholder.analyze(data, prefix);
                     chart.getxAxis().put("data", analyze);
                     xAxisArray.add(chart.getxAxis());
                     chart.getChart().put("series", seriesArray);
