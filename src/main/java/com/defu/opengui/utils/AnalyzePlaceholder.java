@@ -3,6 +3,7 @@ package com.defu.opengui.utils;
 import com.defu.opengui.service.ReadSourceService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,14 @@ public class AnalyzePlaceholder {
         while (matcher.find()){
             final String group = PathUtils.getAbsolute(matcher.group(1), prefix);
             try {
+                if (group.contains("#")){
+                    final String substring = group.substring(group.indexOf("#")+1);
+                    final Integer integer = Integer.valueOf(substring);
+                    final List<String> lines = ReadSourceService.readLinesData(group.substring(0, group.indexOf("#")));
+                    final String s = lines.get(integer);
+                    String arr = "[" + s + "]";
+                    return arr;
+                }
                 final String dataRes = ReadSourceService.readData(group);
                 return dataRes;
             } catch (IOException e) {
