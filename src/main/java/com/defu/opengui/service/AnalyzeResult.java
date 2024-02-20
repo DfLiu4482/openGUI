@@ -28,6 +28,7 @@ public class AnalyzeResult {
     private ResourceLoader resourceLoader;
 
     public List<Map<String, String>> analyze(String path){
+        final long num = System.currentTimeMillis();
         File directory = new File(path);
         List<Map<String, String>> fileNames = new ArrayList<>();
         // 判断是文件还是路径
@@ -35,28 +36,28 @@ public class AnalyzeResult {
             final File[] files = directory.listFiles();
             // 遍历文件数组
             for (File file : files) {
-                Map map = new HashMap();
-                map.put("name", file.getName());
-                map.put("src", file.getAbsolutePath());
-                fileNames.add(map);
-                //copyResource(file);
+                extracted(num, file, fileNames);
             }
         }else if (directory.isFile()){
-            Map map = new HashMap();
-            if(FileTypeChecker.isImageFile(directory)){
-                map.put("name", directory.getName());
-            }else{
-                map.put("name", "file.jpeg");
-            }
-            map.put("src", directory.getAbsolutePath());
-            fileNames.add(map);
-            //copyResource(directory);
-
+            extracted(num, directory, fileNames);
         }
         return fileNames;
     }
 
-    private void copyResource(File file){
+    private void extracted(long num, File file, List<Map<String, String>> fileNames) {
+        Map map = new HashMap();
+        if(FileTypeChecker.isImageFile(file)){
+            map.put("name", num + file.getName());
+            copyResource(file, num);
+        }else{
+            map.put("name", "/images/file.jpeg");
+        }
+        map.put("src", file.getAbsolutePath());
+        fileNames.add(map);
+    }
+
+
+    private void copyResource(File file, Long num){
         Path sourcePath =  Paths.get(file.getAbsolutePath());
         File path =new File(PathUtils.getJarPath()+"/temp");
         if (!path.isDirectory()){
@@ -64,7 +65,7 @@ public class AnalyzeResult {
         }
         // 构建目标文件路径
         try {
-            Path targetPath = Paths.get(PathUtils.getJarPath()+"/temp", file.getName());
+            Path targetPath = Paths.get(PathUtils.getJarPath()+"/temp", num+file.getName());
             // 拷贝文件到目标目录
             Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {

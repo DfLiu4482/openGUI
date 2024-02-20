@@ -46,7 +46,7 @@ public class IndexService {
         List<Map<String, Object>> retList = new ArrayList<>();
 
         // 指定路径前缀
-        String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
+        final String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
 
         final List<ConfigJson> configJsonList = configList.getConfigJsonList();
         configJsonList.forEach(configJson -> {

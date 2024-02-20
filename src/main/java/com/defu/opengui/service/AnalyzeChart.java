@@ -45,14 +45,15 @@ public class AnalyzeChart {
                     seriesArray.add(jsonObject);
                 });
 
-                final String data = chart.getxAxis().getString("data");
-                final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                chart.getxAxis().put("data", JSONObject.parseArray(analyze));
-                xAxisArray.add(chart.getxAxis());
-                templateJson.put("series", seriesArray);
-                templateJson.put("xAxis", chart.getxAxis());
-                chartRes.add(templateJson);
-
+                if (!ObjectUtils.isEmpty(chart.getxAxis())&& StringUtils.hasText(chart.getxAxis().getString("data"))){
+                    final String data = chart.getxAxis().getString("data");
+                    final String analyze = AnalyzePlaceholder.analyze(data, prefix);
+                    chart.getxAxis().put("data", JSONObject.parseArray(analyze));
+                    xAxisArray.add(chart.getxAxis());
+                    templateJson.put("series", seriesArray);
+                    templateJson.put("xAxis", chart.getxAxis());
+                    chartRes.add(templateJson);
+                }
             }else {
                 chart.getChart().getJSONArray("series").forEach(value->{
                     final JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(value));
@@ -65,12 +66,23 @@ public class AnalyzeChart {
 
                 if (!ObjectUtils.isEmpty(chart.getChart().getJSONObject("xAxis"))&&
                         StringUtils.hasText(chart.getChart().getJSONObject("xAxis").getString("data"))){
+                    final JSONObject xAxis = chart.getChart().getJSONObject("xAxis");
                     final String data = chart.getChart().getJSONObject("xAxis").getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    chart.getxAxis().put("data", analyze);
+                    xAxis.put("data", JSONObject.parseArray(analyze));
                     xAxisArray.add(chart.getxAxis());
                     chart.getChart().put("series", seriesArray);
-                    chart.getChart().put("xAxis", chart.getxAxis());
+                    chart.getChart().put("xAxis", xAxis);
+                }
+                if (!ObjectUtils.isEmpty(chart.getChart().getJSONObject("yAxis"))&&
+                        StringUtils.hasText(chart.getChart().getJSONObject("yAxis").getString("data"))){
+                    final JSONObject yAxis = chart.getChart().getJSONObject("yAxis");
+                    final String data = chart.getChart().getJSONObject("yAxis").getString("data");
+                    final String analyze = AnalyzePlaceholder.analyze(data, prefix);
+                    yAxis.put("data", JSONObject.parseArray(analyze));
+                    xAxisArray.add(chart.getyAxis());
+                    chart.getChart().put("series", seriesArray);
+                    chart.getChart().put("yAxis", yAxis);
                 }
                 chartRes.add(chart.getChart());
 

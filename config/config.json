@@ -11,13 +11,7 @@
                 "name": "fq",
                 "type": "file",
                 "param": ""
-            },
-            {
-                "name": "testString",
-                "type": "string",
-                "param": "-s"
             }
-
         ]
     },
     {
@@ -45,71 +39,173 @@
 
         ],
         "output": "result",
-        "charts": [
+        "table": {
+            "path": "result/allsequences.txt"
+        },
+        "result": {
+            "path": "result/allsequences.txt"
+        }
+    },
+    {
+        "order": 2,
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/1output_data.R",
+        "input" : [
             {
-                "xAxis": {
-                    "type": "category",
-                    "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt#0}"
-                },
-                "series": [
-                    {
-                        "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt#1}",
-                        "type": "line"
-                    }
-                ],
-                "chart": {}
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"result/allsequences.txt"
             },
             {
-                "xAxis": {},
-                "series": [],
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "configtwo",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/HaplotypeDatabase.csv"
+            }
+        ],
+        "output": "./"
+    },
+    {
+        "order": 3,
+        "execFile": "Rscript /Users/defuliu/research/openGUI/0/2data_echarts.R",
+        "input" : [
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/AlleleSummary.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/LocusSummary.tsv"
+            },
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            }
+        ],
+        "output": "./",
+        "charts": [
+            {
                 "chart": {
+                    "title": {
+                        "text": "figuretest Locus Summary",
+                        "left": "center"
+                    },
+                    "tooltip": {
+                        "trigger": "axis",
+                        "axisPointer": {
+                            "type": "shadow"
+                        }
+                    },
                     "toolbox": {
+                        "show": true,
                         "feature": {
                             "saveAsImage":{
                                 "type": "png"
+                            },
+                            "magicType": {
+                                "type": ["line", "bar"]
                             }
                         }
                     },
-                    "xAxis": {},
-                    "yAxis": {},
+                    "xAxis": {
+                        "type": "value",
+                        "name": "Total Reads",
+                        "nameLocation": "middle",
+                        "nameGap": 20,
+                        "nameTextStyle": {
+                            "fontSize": 24
+                        }
+                    },
+                    "yAxis": {
+                        "type": "category",
+                        "data": "${echarts/data_for_LocusSummary.txt#0}",
+                        "axisLabel": {
+                            "interval": 0
+                        },
+                        "name": "Locus",
+                        "nameLocation": "center",
+                        "nameRotate": 90,
+                        "nameGap": 100,
+                        "nameTextStyle": {
+                            "fontSize": 24
+                        }
+                    },
                     "series": [
                         {
-                            "data": [
-                                [10.0, 8.04],
-                                [8.07, 6.95],
-                                [13.0, 7.58],
-                                [9.05, 8.81],
-                                [11.0, 8.33],
-                                [14.0, 7.66],
-                                [13.4, 6.81],
-                                [10.0, 6.33],
-                                [14.0, 8.96],
-                                [12.5, 6.82],
-                                [9.15, 7.2],
-                                [11.5, 7.2],
-                                [3.03, 4.23],
-                                [12.2, 7.83],
-                                [2.02, 4.47],
-                                [1.05, 3.33],
-                                [4.05, 4.96],
-                                [6.03, 7.24],
-                                [12.0, 6.26],
-                                [12.0, 8.84],
-                                [7.08, 5.82],
-                                [5.02, 5.68]
-                            ],
-                            "type": "scatter"
+                            "name": "Total Reads",
+                            "type": "bar",
+                            "data": "${echarts/data_for_LocusSummary.txt#2}",
+                            "label": {
+                                "show": true,
+                                "position": "inside"
+                            }
+                        },
+                        {
+                            "name": "Unique Haps",
+                            "type": "scatter",
+                            "yAxisIndex": 0,
+                            "data": "${echarts/data_for_LocusSummary.txt#1}",
+                            "symbolSize": 10,
+                            "label": {
+                                "show": true,
+                                "position": "right"
+                            }
                         }
                     ]
                 }
-
+            }
+        ]
+    },
+    {
+        "order": 4,
+        "execFile": "Rscript /Users/defuliu/research/openGUI/0/2Figures.R",
+        "input" : [
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/AlleleSummary.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/LocusSummary.tsv"
             }
         ],
+        "output": "./",
         "result": {
-            "path": "result/allsequences.txt"
-        },
-        "table": {
-            "path": "result/allsequences.txt"
+            "path": "allpic"
         }
     }
 ]

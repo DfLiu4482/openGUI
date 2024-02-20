@@ -14,9 +14,19 @@ public class ConfigChart {
     // bar line scatter
     private JSONObject xAxis;
 
+    private JSONObject yAxis;
+
     private JSONArray series;
 
     private JSONObject chart;
+
+    public JSONObject getyAxis() {
+        return yAxis;
+    }
+
+    public void setyAxis(JSONObject yAxis) {
+        this.yAxis = yAxis;
+    }
 
     public JSONObject getxAxis() {
         return xAxis;
@@ -46,6 +56,7 @@ public class ConfigChart {
     public String toString() {
         return "ConfigChart{" +
                 "xAxis=" + xAxis +
+                ", yAxis=" + yAxis +
                 ", series=" + series +
                 ", chart=" + chart +
                 '}';
