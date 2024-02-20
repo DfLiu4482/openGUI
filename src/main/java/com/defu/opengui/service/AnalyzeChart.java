@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 @Service
 public class AnalyzeChart {
 
-    public List<JSONObject>  analyze(List<ConfigChart> charts, String prefix) {
+    public List<JSONObject> analyze(List<ConfigChart> charts, String prefix) {
 
         String path = PathUtils.getJarPath()+"/config/chat.json";
         final JSONObject templateJson;
@@ -35,31 +36,47 @@ public class AnalyzeChart {
         charts.forEach(chart->{
             JSONArray seriesArray = new JSONArray();
             JSONArray xAxisArray = new JSONArray();
-            if (ObjectUtils.isEmpty(chart.getChart())){
+            if (!ObjectUtils.isEmpty(chart.getFile())){
+                // 读取文件
+                final String chartPath = PathUtils.getAbsolute(chart.getFile(), prefix);
+                File file = new File(chartPath);
+                if (file.isDirectory()){
+                    final File[] files = file.listFiles();
+                    for (File f : files){
+                        extracted(chartRes, f);
+                    }
+
+                }else if (file.isFile()){
+                    extracted(chartRes, file);
+                }else{
+                    throw new RuntimeException("图表解析失败");
+                }
+
+            }else if (ObjectUtils.isEmpty(chart.getChart())){
                 // 解析series
                 chart.getSeries().forEach(value->{
                     final JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(value));
                     final String data = jsonObject.getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    jsonObject.put("data", JSONObject.parseArray(analyze));
+                    jsonObject.put("data", JSONObject.parseArray("["+analyze+"]"));
                     seriesArray.add(jsonObject);
                 });
 
                 if (!ObjectUtils.isEmpty(chart.getxAxis())&& StringUtils.hasText(chart.getxAxis().getString("data"))){
                     final String data = chart.getxAxis().getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    chart.getxAxis().put("data", JSONObject.parseArray(analyze));
+                    chart.getxAxis().put("data", JSONObject.parseArray("["+analyze+"]"));
                     xAxisArray.add(chart.getxAxis());
-                    templateJson.put("series", seriesArray);
-                    templateJson.put("xAxis", chart.getxAxis());
-                    chartRes.add(templateJson);
                 }
+                templateJson.put("series", seriesArray);
+                templateJson.put("xAxis", chart.getxAxis());
+                chartRes.add(templateJson);
             }else {
                 chart.getChart().getJSONArray("series").forEach(value->{
                     final JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(value));
                     final String data = jsonObject.getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    jsonObject.put("data", JSONObject.parseArray(analyze));
+                    jsonObject.put("data", JSONObject.parseArray("["+analyze+"]"));
                     seriesArray.add(jsonObject);
                 });
                 chart.getChart().put("series", seriesArray);
@@ -69,7 +86,7 @@ public class AnalyzeChart {
                     final JSONObject xAxis = chart.getChart().getJSONObject("xAxis");
                     final String data = chart.getChart().getJSONObject("xAxis").getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    xAxis.put("data", JSONObject.parseArray(analyze));
+                    xAxis.put("data", JSONObject.parseArray("["+analyze+"]"));
                     xAxisArray.add(chart.getxAxis());
                     chart.getChart().put("series", seriesArray);
                     chart.getChart().put("xAxis", xAxis);
@@ -79,15 +96,31 @@ public class AnalyzeChart {
                     final JSONObject yAxis = chart.getChart().getJSONObject("yAxis");
                     final String data = chart.getChart().getJSONObject("yAxis").getString("data");
                     final String analyze = AnalyzePlaceholder.analyze(data, prefix);
-                    yAxis.put("data", JSONObject.parseArray(analyze));
+                    yAxis.put("data", JSONObject.parseArray("["+analyze+"]"));
                     xAxisArray.add(chart.getyAxis());
                     chart.getChart().put("series", seriesArray);
                     chart.getChart().put("yAxis", yAxis);
                 }
                 chartRes.add(chart.getChart());
-
             }
         });
         return chartRes;
+    }
+
+    private void extracted(List<JSONObject> chartRes, File file) {
+        final String s;
+        try {
+            s = ReadSourceService.readData(file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("图表解析失败");
+        }
+        final JSONObject jsonObject = JSONObject.parseObject(s);
+        chartRes.add(jsonObject);
+    }
+
+    public JSONObject cleanJson(JSONObject json){
+        final String s = json.toJSONString();
+        return null;
     }
 }

@@ -24,12 +24,12 @@ public class AnalyzePlaceholder {
                     final Integer integer = Integer.valueOf(substring);
                     final List<String> lines = ReadSourceService.readLinesData(group.substring(0, group.indexOf("#")));
                     final String s = lines.get(integer);
-                    String arr = "[" + s + "]";
-                    return arr;
+                    data = data.replace(matcher.group(0), s);
+                }else{
+                    data = data.replace( matcher.group(0), ReadSourceService.readData(group));
                 }
-                final String dataRes = ReadSourceService.readData(group);
-                return dataRes;
             } catch (IOException e) {
+                e.printStackTrace();
                 throw new RuntimeException("读取图表数据异常");
             }
         }

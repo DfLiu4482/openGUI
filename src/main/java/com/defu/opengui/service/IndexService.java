@@ -16,6 +16,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +50,11 @@ public class IndexService {
 
         // 指定路径前缀
         final String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
+        try {
+            Files.createDirectory(Paths.get(prefix));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         final List<ConfigJson> configJsonList = configList.getConfigJsonList();
         configJsonList.forEach(configJson -> {
@@ -57,26 +65,30 @@ public class IndexService {
             }
 
             // 输出路径
-            if (StringUtils.hasText(configJson.getOutput())){
-                configJson.setOutput(PathUtils.getAbsolute(configJson.getOutput(), prefix));
-                File file = new File(configJson.getOutput());
+            String output = configJson.getOutput();
+            if (StringUtils.hasText(output)){
+                output = PathUtils.getAbsolute(output, prefix);
+                File file = new File(output);
                 if (!file.isDirectory()){
                     file.mkdirs();
                 }
+            }else{
+                output = PathUtils.getAbsolute("", prefix);
             }
 
             // 拼接输入参数
             StringBuilder inputParam  = new StringBuilder();
             if (!ObjectUtils.isEmpty(configJson.getInput()) && !CollectionUtils.isEmpty(configJson.getInput())){
                 for (ConfigInput configInput : configJson.getInput()){
+                    String value = configInput.getValue();
                     if (configInput.getParam()!=null){
                         inputParam.append(" " + configInput.getParam());
                     }
-                    if ("path".equals(configInput.getType()) && StringUtils.hasText(configInput.getValue())){
-                        configInput.setValue(PathUtils.getAbsolute(configInput.getValue(), prefix));
+                    if ("path".equals(configInput.getType()) && StringUtils.hasText(value)){
+                        value = PathUtils.getAbsolute(value, prefix);
                     }
-                    if (StringUtils.hasText(configInput.getValue())){
-                        inputParam.append(" " + configInput.getValue());
+                    if (StringUtils.hasText(value)){
+                        inputParam.append(" " + value);
                     }else{
                         inputParam.append(" " + input.get(configInput.getName()));
                     }
@@ -88,8 +100,8 @@ public class IndexService {
             final ReturnMsgUtil returnMsgUtil;
             try {
                 String cmd = "";
-                if (StringUtils.hasText(configJson.getOutput())){
-                    cmd = "cd "+configJson.getOutput()+" && ";
+                if (StringUtils.hasText(output)){
+                    cmd = "cd "+output+" && ";
                 }
                 cmd += software + inputParam;
                 returnMsgUtil = TerminalUtil.execCmd(cmd, null);

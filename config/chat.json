@@ -19,7 +19,7 @@
   },
   "series": [
     {
-      "data": "${/Users/defuliu/workspace/IdeaProjects/openGUI/data/bar.txt}",
+      "data": ["1","2","3","4","5","6","7"],
       "type": "bar"
     }
   ]

@@ -69,11 +69,11 @@
                 "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/HaplotypeDatabase.csv"
             }
         ],
-        "output": "./"
+        "output": ""
     },
     {
         "order": 3,
-        "execFile": "Rscript /Users/defuliu/research/openGUI/0/2data_echarts.R",
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2data_echarts.R",
         "input" : [
             {
                 "name": "",
@@ -100,7 +100,7 @@
                 "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
             }
         ],
-        "output": "./",
+        "output": "",
         "charts": [
             {
                 "chart": {
@@ -171,12 +171,15 @@
                         }
                     ]
                 }
+            },
+            {
+                "file": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/chat.json"
             }
         ]
     },
     {
         "order": 4,
-        "execFile": "Rscript /Users/defuliu/research/openGUI/0/2Figures.R",
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2Figures.R",
         "input" : [
             {
                 "name": "configone",
@@ -203,7 +206,7 @@
                 "value": "OUTPUT_DATA/LocusSummary.tsv"
             }
         ],
-        "output": "./",
+        "output": "",
         "result": {
             "path": "allpic"
         }
