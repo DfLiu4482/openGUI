@@ -1,4 +1,4 @@
-package com.defu.opengui;
+package com.defu.opengui.config;
 
 import com.defu.opengui.entity.ConfigList;
 import com.defu.opengui.service.ReadSourceService;
@@ -9,11 +9,10 @@ import java.io.IOException;
 
 /**
  * @author: dfliu
- * @date: 2024/01/11
+ * @date: 2024/02/21
  **/
 @Configuration
-public class MyConfiguration {
-
+public class AppConfig {
     @Bean
     public ConfigList configList() throws IOException {
         ReadSourceService readSourceService  = new ReadSourceService();

@@ -25,9 +25,6 @@ import java.util.Map;
 @Service
 public class AnalyzeResult {
 
-    @Resource
-    private ResourceLoader resourceLoader;
-
     public List<Map<String, String>> analyze(ConfigResult result){
         final long num = System.currentTimeMillis();
         File directory = new File(result.getPath());
@@ -51,7 +48,7 @@ public class AnalyzeResult {
             map.put("name", num + file.getName());
             copyResource(file, num);
         }else{
-            map.put("name", "/images/file.jpeg");
+            map.put("name", "file.jpeg");
         }
         map.put("src", file.getAbsolutePath());
         map.put("blockWeight", result.getBlockWeight());
