@@ -27,6 +27,26 @@ public class ConfigChart {
 
     private String file;
 
+    private Integer blockWeight;
+
+    private Integer blockHeight;
+
+    public Integer getBlockWeight() {
+        return blockWeight;
+    }
+
+    public void setBlockWeight(Integer blockWeight) {
+        this.blockWeight = blockWeight;
+    }
+
+    public Integer getBlockHeight() {
+        return blockHeight;
+    }
+
+    public void setBlockHeight(Integer blockHeight) {
+        this.blockHeight = blockHeight;
+    }
+
     public String getFile() {
         return file;
     }
@@ -77,6 +97,8 @@ public class ConfigChart {
                 ", series=" + series +
                 ", chart=" + chart +
                 ", file='" + file + '\'' +
+                ", blockWeight=" + blockWeight +
+                ", blockHeight=" + blockHeight +
                 '}';
     }
 }

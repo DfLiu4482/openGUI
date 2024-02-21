@@ -43,11 +43,11 @@ public class AnalyzeChart {
                 if (file.isDirectory()){
                     final File[] files = file.listFiles();
                     for (File f : files){
-                        extracted(chartRes, f);
+                        extracted(chartRes, f, chart);
                     }
 
                 }else if (file.isFile()){
-                    extracted(chartRes, file);
+                    extracted(chartRes, file, chart);
                 }else{
                     throw new RuntimeException("图表解析失败");
                 }
@@ -70,6 +70,8 @@ public class AnalyzeChart {
                 }
                 templateJson.put("series", seriesArray);
                 templateJson.put("xAxis", chart.getxAxis());
+                templateJson.put("blockWeight", chart.getBlockWeight());
+                templateJson.put("blockHeight", chart.getBlockHeight());
                 chartRes.add(templateJson);
             }else {
                 chart.getChart().getJSONArray("series").forEach(value->{
@@ -101,13 +103,15 @@ public class AnalyzeChart {
                     chart.getChart().put("series", seriesArray);
                     chart.getChart().put("yAxis", yAxis);
                 }
+                chart.getChart().put("blockWeight", chart.getBlockWeight());
+                chart.getChart().put("blockHeight", chart.getBlockHeight());
                 chartRes.add(chart.getChart());
             }
         });
         return chartRes;
     }
 
-    private void extracted(List<JSONObject> chartRes, File file) {
+    private void extracted(List<JSONObject> chartRes, File file, ConfigChart chart) {
         final String s;
         try {
             s = ReadSourceService.readData(file.getAbsolutePath());
@@ -116,6 +120,8 @@ public class AnalyzeChart {
             throw new RuntimeException("图表解析失败");
         }
         final JSONObject jsonObject = JSONObject.parseObject(s);
+        jsonObject.put("blockWeight", chart.getBlockWeight());
+        jsonObject.put("blockHeight", chart.getBlockHeight());
         chartRes.add(jsonObject);
     }
 

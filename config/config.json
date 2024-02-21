@@ -40,10 +40,13 @@
         ],
         "output": "result",
         "table": {
-            "path": "result/allsequences.txt"
+            "path": "result/allsequences.txt",
+            "blockWeight": 12
         },
         "result": {
-            "path": "result/allsequences.txt"
+            "path": "result/allsequences.txt",
+            "blockWeight": 3,
+            "blockHeight": 3
         }
     },
     {
@@ -73,6 +76,42 @@
     },
     {
         "order": 3,
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2Figures.R",
+        "input" : [
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/AlleleSummary.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/LocusSummary.tsv"
+            }
+        ],
+        "output": "",
+        "result": {
+            "path": "allpic",
+            "blockWeight": 3,
+            "blockHeight": 3
+        }
+    },
+    {
+        "order": 4,
         "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2data_echarts.R",
         "input" : [
             {
@@ -103,6 +142,13 @@
         "output": "",
         "charts": [
             {
+                "file": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/chat.json",
+                "blockWeight": 6,
+                "blockHeight": 6
+            },
+            {
+                "blockWeight": 6,
+                "blockHeight": 20,
                 "chart": {
                     "title": {
                         "text": "figuretest Locus Summary",
@@ -171,44 +217,7 @@
                         }
                     ]
                 }
-            },
-            {
-                "file": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/chat.json"
             }
         ]
-    },
-    {
-        "order": 4,
-        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2Figures.R",
-        "input" : [
-            {
-                "name": "configone",
-                "type": "path",
-                "param": "",
-                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
-            },
-            {
-                "name": "",
-                "type": "path",
-                "param":"",
-                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
-            },
-            {
-                "name": "",
-                "type": "path",
-                "param": "",
-                "value": "OUTPUT_DATA/AlleleSummary.tsv"
-            },
-            {
-                "name": "",
-                "type": "path",
-                "param": "",
-                "value": "OUTPUT_DATA/LocusSummary.tsv"
-            }
-        ],
-        "output": "",
-        "result": {
-            "path": "allpic"
-        }
     }
 ]

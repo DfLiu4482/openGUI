@@ -120,13 +120,13 @@ public class IndexService {
                 // 解析结果
                 if (!ObjectUtils.isEmpty(configJson.getResult()) && StringUtils.hasText(configJson.getResult().getPath())){
                     configJson.getResult().setPath(PathUtils.getAbsolute(configJson.getResult().getPath(), prefix));
-                    List<Map<String, String>> fileNames = analyzeResult.analyze(configJson.getResult().getPath());
+                    List<Map<String, String>> fileNames = analyzeResult.analyze(configJson.getResult());
                     retData.put("result", fileNames);
                 }
                 // 解析表格
                 if (!ObjectUtils.isEmpty(configJson.getTable()) && StringUtils.hasText(configJson.getTable().getPath())){
                     configJson.getTable().setPath(PathUtils.getAbsolute(configJson.getTable().getPath(), prefix));
-                    final Map<String, Object> table = analyzeTable.analyze(configJson.getTable().getPath());
+                    final Map<String, Object> table = analyzeTable.analyze(configJson.getTable());
                     retData.put("table", table);
                 }
 

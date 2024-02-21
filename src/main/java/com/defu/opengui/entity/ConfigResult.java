@@ -8,7 +8,28 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 public class ConfigResult {
+
     private String path;
+
+    private Integer blockWeight;
+
+    private Integer blockHeight;
+
+    public Integer getBlockWeight() {
+        return blockWeight;
+    }
+
+    public void setBlockWeight(Integer blockWeight) {
+        this.blockWeight = blockWeight;
+    }
+
+    public Integer getBlockHeight() {
+        return blockHeight;
+    }
+
+    public void setBlockHeight(Integer blockHeight) {
+        this.blockHeight = blockHeight;
+    }
 
     public String getPath() {
         return path;
@@ -22,6 +43,8 @@ public class ConfigResult {
     public String toString() {
         return "ConfigResult{" +
                 "path='" + path + '\'' +
+                ", blockWeight=" + blockWeight +
+                ", blockHeight=" + blockHeight +
                 '}';
     }
 }

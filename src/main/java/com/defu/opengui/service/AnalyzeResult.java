@@ -1,5 +1,6 @@
 package com.defu.opengui.service;
 
+import com.defu.opengui.entity.ConfigResult;
 import com.defu.opengui.utils.FileTypeChecker;
 import com.defu.opengui.utils.PathUtils;
 import jakarta.annotation.Resource;
@@ -27,24 +28,24 @@ public class AnalyzeResult {
     @Resource
     private ResourceLoader resourceLoader;
 
-    public List<Map<String, String>> analyze(String path){
+    public List<Map<String, String>> analyze(ConfigResult result){
         final long num = System.currentTimeMillis();
-        File directory = new File(path);
+        File directory = new File(result.getPath());
         List<Map<String, String>> fileNames = new ArrayList<>();
         // 判断是文件还是路径
         if (directory.isDirectory()){
             final File[] files = directory.listFiles();
             // 遍历文件数组
             for (File file : files) {
-                extracted(num, file, fileNames);
+                extracted(num, file, fileNames, result);
             }
         }else if (directory.isFile()){
-            extracted(num, directory, fileNames);
+            extracted(num, directory, fileNames, result);
         }
         return fileNames;
     }
 
-    private void extracted(long num, File file, List<Map<String, String>> fileNames) {
+    private void extracted(long num, File file, List<Map<String, String>> fileNames, ConfigResult result) {
         Map map = new HashMap();
         if(FileTypeChecker.isImageFile(file)){
             map.put("name", num + file.getName());
@@ -53,6 +54,8 @@ public class AnalyzeResult {
             map.put("name", "/images/file.jpeg");
         }
         map.put("src", file.getAbsolutePath());
+        map.put("blockWeight", result.getBlockWeight());
+        map.put("blockHeight", result.getBlockHeight());
         fileNames.add(map);
     }
 

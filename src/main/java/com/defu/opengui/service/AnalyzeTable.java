@@ -1,5 +1,6 @@
 package com.defu.opengui.service;
 
+import com.defu.opengui.entity.ConfigTable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,10 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class AnalyzeTable {
 
-    public Map<String, Object> analyze(String path){
+    public Map<String, Object> analyze(ConfigTable configTable){
         Map<String, Object> table = new HashMap<>();
         try {
-            final List<String> lines = ReadSourceService.readLinesData(path);
+            final List<String> lines = ReadSourceService.readLinesData(configTable.getPath());
             //获取表头
             final String head = lines.get(0);
             final String[] headArray = head.split("\\t|\\s+");
@@ -37,6 +38,7 @@ public class AnalyzeTable {
             }).collect(Collectors.toList());
             table.put("columns", headList);
             table.put("data", dataList);
+            table.put("blockWeight", configTable.getBlockWeight());
 
             return table;
         } catch (IOException e) {
