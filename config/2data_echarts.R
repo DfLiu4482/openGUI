@@ -90,7 +90,7 @@ if(!dir.exists("echarts/data_for_Electrofakogram")) {
   dir.create("echarts/data_for_Electrofakogram")
 }
 
-json_file_path <- "/Users/defuliu/research/openGUI/0/3Electrofakogram_副本.json";
+json_file_path <- args[5];
 json_data <- fromJSON(json_file_path);
 
 # 遍历sorted_matrix_list中的每个元素

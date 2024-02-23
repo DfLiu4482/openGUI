@@ -1,0 +1,63 @@
+{
+    "xAxis": [
+        {
+            "type": "category",
+            "data": [
+                30,
+                30.2,
+                31,
+                31.2,
+                32
+            ],
+            "axisTick": {
+                "alignWithLabel": true
+            },
+            "name": "Alleles",
+            "nameLocation": "middle",
+            "nameGap": 20,
+            "nameTextStyle": {
+                "fontSize": 16
+            }
+        }
+    ],
+    "yAxis": [
+        {
+            "type": "value",
+            "name": "Read Depth",
+            "nameLocation": "center",
+            "nameRotate": 90,
+            "nameGap": 40,
+            "nameTextStyle": {
+                "fontSize": 16
+            }
+        }
+    ],
+    "series": [
+        {
+            "name": "HaplotypeSum1",
+            "type": "bar",
+            "stack": "total",
+            "barWidth": "60%",
+            "data": [
+                77,
+                24,
+                843,
+                689,
+                12
+            ]
+        },
+        {
+            "name": "HaplotypeSum1",
+            "type": "bar",
+            "stack": "total",
+            "barWidth": "60%",
+            "data": [
+                77,
+                24,
+                843,
+                689,
+                12
+            ]
+        }
+    ]
+}

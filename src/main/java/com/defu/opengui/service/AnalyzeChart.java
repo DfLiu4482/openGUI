@@ -23,7 +23,7 @@ public class AnalyzeChart {
 
     public List<JSONObject> analyze(List<ConfigChart> charts, String prefix) {
 
-        String path = PathUtils.getJarPath()+"/config/chat.json";
+        String path = PathUtils.getJarPath()+"/data/chat.json";
         final JSONObject templateJson;
         try {
             templateJson = JSONObject.parseObject(ReadSourceService.readData(path));

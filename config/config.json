@@ -137,6 +137,12 @@
                 "type": "path",
                 "param": "",
                 "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "chartjson",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/3Electrofakogram.json"
             }
         ],
         "output": "",
