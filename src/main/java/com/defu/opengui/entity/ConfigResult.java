@@ -2,12 +2,14 @@ package com.defu.opengui.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  * @author: dfliu
  * @date: 2024/02/07
  **/
 @Component
-public class ConfigResult {
+public class ConfigResult implements Serializable {
 
     private String path;
 

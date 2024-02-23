@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  * @author: dfliu
  * @date: 2024/02/07
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Component;
  * 3：xAxis,yAxis,series仅定义这三个数据从已经定义的模版中画最简单的图
  **/
 @Component
-public class ConfigChart {
+public class ConfigChart implements Serializable {
 
     // bar line scatter
     private JSONObject xAxis;

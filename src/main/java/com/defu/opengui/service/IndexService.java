@@ -5,10 +5,7 @@ import com.defu.opengui.entity.ConfigChart;
 import com.defu.opengui.entity.ConfigInput;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
-import com.defu.opengui.utils.PathUtils;
-import com.defu.opengui.utils.ResponseResult;
-import com.defu.opengui.utils.ReturnMsgUtil;
-import com.defu.opengui.utils.TerminalUtil;
+import com.defu.opengui.utils.*;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -47,6 +44,13 @@ public class IndexService {
     public ResponseResult execute(Map<String, Object> input){
 
         List<Map<String, Object>> retList = new ArrayList<>();
+        ConfigList deepClone;
+        try {
+            deepClone = DeepCloneUtil.deepClone(configList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Create replica object exception!");
+        }
 
         // 指定路径前缀
         final String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
@@ -54,9 +58,10 @@ public class IndexService {
             Files.createDirectory(Paths.get(prefix));
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException("Create userspace exception!");
         }
 
-        final List<ConfigJson> configJsonList = configList.getConfigJsonList();
+        final List<ConfigJson> configJsonList = deepClone.getConfigJsonList();
         configJsonList.forEach(configJson -> {
             Map<String, Object> retData = new HashMap<>();
             String software = configJson.getExecFile();
@@ -106,6 +111,7 @@ public class IndexService {
                 cmd += software + inputParam;
                 returnMsgUtil = TerminalUtil.execCmd(cmd, null);
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new RuntimeException("Computation exception!");
             }
 
@@ -131,7 +137,7 @@ public class IndexService {
                 }
 
             }else{
-                throw new RuntimeException("Computation fail！");
+                throw new RuntimeException("The command line failed to be executed！ "+software);
             }
             retList.add(retData);
         });

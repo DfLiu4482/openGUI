@@ -2,6 +2,7 @@ package com.defu.opengui.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,8 @@ import java.util.List;
  * @date: 2024/02/06
  **/
 @Component
-public class ConfigList {
+public class ConfigList implements Serializable {
+
     List<ConfigJson> configJsonList;
 
     public List<ConfigJson> getConfigJsonList() {

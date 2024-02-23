@@ -2,6 +2,7 @@ package com.defu.opengui.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @date: 2024/01/11
  **/
 @Component
-public class ConfigJson {
+public class ConfigJson implements Serializable {
 
     // 命令排序 0 为固定的，决定页面显示
     private Integer order;

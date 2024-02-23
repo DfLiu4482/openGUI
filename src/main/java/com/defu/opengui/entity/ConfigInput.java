@@ -2,12 +2,14 @@ package com.defu.opengui.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 /**
  * @author: dfliu
  * @date: 2024/01/11
  **/
 @Component
-public class ConfigInput {
+public class ConfigInput implements Serializable {
 
     // 参数的唯一标识
     private String name;

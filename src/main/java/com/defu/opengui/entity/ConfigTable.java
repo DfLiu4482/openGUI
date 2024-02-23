@@ -1,10 +1,12 @@
 package com.defu.opengui.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: dfliu
  * @date: 2024/02/07
  **/
-public class ConfigTable {
+public class ConfigTable implements Serializable {
 
     private String path;
 

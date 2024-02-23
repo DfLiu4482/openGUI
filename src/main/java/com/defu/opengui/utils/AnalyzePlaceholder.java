@@ -30,7 +30,7 @@ public class AnalyzePlaceholder {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException("读取图表数据异常");
+                throw new RuntimeException("Chart placeholder analyze exception!");
             }
         }
         return data;

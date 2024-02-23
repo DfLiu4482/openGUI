@@ -49,7 +49,7 @@ public class AnalyzeChart {
                 }else if (file.isFile()){
                     extracted(chartRes, file, chart);
                 }else{
-                    throw new RuntimeException("图表解析失败");
+                    throw new RuntimeException("Chart analyze exception!");
                 }
 
             }else if (ObjectUtils.isEmpty(chart.getChart())){
@@ -117,16 +117,11 @@ public class AnalyzeChart {
             s = ReadSourceService.readData(file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("图表解析失败");
+            throw new RuntimeException("Chart analyze exception!");
         }
         final JSONObject jsonObject = JSONObject.parseObject(s);
         jsonObject.put("blockWeight", chart.getBlockWeight());
         jsonObject.put("blockHeight", chart.getBlockHeight());
         chartRes.add(jsonObject);
-    }
-
-    public JSONObject cleanJson(JSONObject json){
-        final String s = json.toJSONString();
-        return null;
     }
 }

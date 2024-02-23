@@ -6,9 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.defu.opengui.entity.ConfigJson;
 import com.defu.opengui.entity.ConfigList;
 import com.defu.opengui.utils.PathUtils;
-import org.springframework.boot.system.ApplicationHome;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;

@@ -159,7 +159,7 @@
                 $("#data-row").append('' +
                     '<div class="col-sm-'+weight+'">' +
                         '<div class="ibox">' +
-                            '<div id="chat'+index+no+'" style="width: 100%;height:'+height+'px;">' +
+                            '<div id="chat'+index+no+'" class="echarts-container" style="width: 100%;height:'+height+'px;">' +
                             '</div>' +
                         '</div>' +
                     '</div>')
@@ -234,6 +234,24 @@
             //将面板返回至单元格展示
             return span.outerHTML;
         }
+
+        function disposeAllEchartsInstances() {
+            // 获取所有的ECharts容器
+            var containers = document.getElementsByClassName('echarts-container');
+            for (var i = 0; i < containers.length; i++) {
+                var instance = echarts.getInstanceByDom(containers[i]);
+                if (instance) {
+                    instance.dispose();
+                }
+            }
+        }
+
+        // 监听页面卸载事件
+        window.addEventListener('beforeunload', function(e) {
+            e.preventDefault();
+            e.returnValue = '';
+            disposeAllEchartsInstances();
+        });
     });
 
 </script>
