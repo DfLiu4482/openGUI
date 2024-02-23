@@ -90,15 +90,28 @@ if(!dir.exists("echarts/data_for_Electrofakogram")) {
   dir.create("echarts/data_for_Electrofakogram")
 }
 
+json_file_path <- "/Users/defuliu/research/openGUI/0/3Electrofakogram_副本.json";
+json_data <- fromJSON(json_file_path);
+
 # 遍历sorted_matrix_list中的每个元素
 for(i in seq_along(sorted_matrix_list)) {
   m <- sorted_matrix_list[[i]]
   
+  json_res <- json_data;
+  
   # 检查是否是长度为2的数值向量
   if(is.numeric(m) && length(m) == 2) {
+    json_res$xAxis$data <- list(m[1]);#设置x轴
+    json_res$series$name <- "HaplotypeSum";
+    json_res$series$type <- "bar";
+    json_res$series$stack <- "total";
+    json_res$series$barWidth <- "60%";
+    data <- list(list,m[2]);
+    json_res$series$data <- data;#设置数据
     # 直接保存为两行的文本文件
     file_name <- sprintf("echarts/data_for_Electrofakogram/%s.txt", names(sorted_matrix_list)[i])
-    writeLines(c(as.character(m[1]), as.character(m[2])), file_name)
+    #writeLines(c(as.character(m[1]), as.character(m[2])), file_name)
+    #writeLines(toJSON(json_res),file_name)
   } else {
     # 将矩阵转换为数据框
     df <- as.data.frame(m)
@@ -115,7 +128,38 @@ for(i in seq_along(sorted_matrix_list)) {
     # 构造文件名，包括路径
     file_name <- sprintf("echarts/data_for_Electrofakogram/%s.txt", names(sorted_matrix_list)[i])
     
+    series <- data.frame(
+      name = character(),
+      type = character(),
+      stack = character(),
+      barWidth = character(),
+      data = I(list())
+    );
+    
+    json_res$xAxis$data <- matrix(names(new_wide_df), nrow = 1);
+    for(j in 1:nrow(new_wide_df)) {
+      
+        mydata <- list(unlist(new_wide_df[j,], use.names = FALSE));
+        series <- rbind(series, 
+                        data.frame(
+                           name = "HaplotypeSum",
+                           type = "bar",
+                           stack = "total",
+                           barWidth = "60%",
+                           data = I(mydata)))
+    }
+    #print(series)
+    
+    json_res$series <- series;
+    
+    
     # 保存为TXT文件，使用逗号作为分隔符
-    write.table(new_wide_df, file_name, row.names = FALSE, sep = ",", quote = FALSE)
+    #write.table(new_wide_df, file_name, row.names = FALSE, sep = ",", quote = FALSE)
   }
+  myd = str_c('{"title": {"text": "',names(sorted_matrix_list)[i],'","left":"center"},
+          "tooltip": {"trigger": ["axis"],"axisPointer": {"type":"shadow"}},
+          "grid": {"left": "3%","right":"4%","bottom":"3%","containLabel":true},
+          "xAxis":',toJSON(json_res$xAxis),',"yAxis":',toJSON(json_res$yAxis),',"series":',toJSON(json_res$series),'}');
+  
+  writeLines(myd,file_name)
 }

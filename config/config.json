@@ -142,9 +142,9 @@
         "output": "",
         "charts": [
             {
-                "file": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/chat.json",
-                "blockWeight": 6,
-                "blockHeight": 6
+                "file": "echarts/data_for_Electrofakogram",
+                "blockWeight": 2,
+                "blockHeight": 2
             },
             {
                 "blockWeight": 6,

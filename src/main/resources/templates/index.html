@@ -28,7 +28,16 @@
     </style>
 </head>
 <body style="background-color: #b4b4b7">
-
+<!-- loading -->
+<div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span id="result">Calculating, please wait...</span>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="" style="padding: 20px;">
         <div class="row" style="justify-content:center">
             <div class="col-sm-2">
@@ -74,20 +83,13 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="justify-content:center;" id="data-row"></div>
-        <!-- loading -->
-        <div class="modal fade" id="loading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="myModalLabel">Tips</h4>
-                    </div>
-                    <div class="modal-body">
-                        Calculating, please wait...<span id="result"></span>
-                    </div>
-                </div>
+        <div class="row" style="justify-content: center;" id="none-row">
+            <div class="col-sm-12">
+                <div class="ibox" style="height: 300px; text-align: center;line-height: 300px;">结果显示区域</div>
             </div>
         </div>
+        <div class="row" style="justify-content:center;" id="data-row"></div>
+
     </div>
 
 
@@ -118,6 +120,7 @@
                 success: function(response) {
                     $('#loading').modal('hide');
                     if (response.code == 200){
+                        $('#none-row').hide();
                         $("#data-row").html('');
                         response.data.forEach(function (value, index){
                             if (value.table){
@@ -131,12 +134,12 @@
                             }
                         });
                     }else{
-                        alert(response.message);
+                        $('#result').text(response.message)
                     }
                 },
                 error: function(xhr, status, error) {
                     $('#loading').modal('hide');
-                    alert("Calculation failure");
+                    $('#result').text("Calculation exception!")
                 }
             })
         });
