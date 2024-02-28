@@ -33,6 +33,12 @@ public class IndexController {
     @Resource
     private ConfigList configList;
 
+    @GetMapping("/")
+    public String indexStart(ModelMap mmap) {
+        mmap.put("config", configList.getConfigJsonList().get(0));
+        return "index";
+    }
+
     @GetMapping("/index")
     public String index(ModelMap mmap) {
         System.out.println(configList);
