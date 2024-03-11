@@ -55,7 +55,7 @@ public class IndexService {
         // 指定路径前缀
         final String prefix = PathUtils.getJarPath() + File.separator+"userspace"+File.separator+System.currentTimeMillis();
         try {
-            Files.createDirectory(Paths.get(prefix));
+            Files.createDirectories(Paths.get(prefix));
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Create userspace exception!");
