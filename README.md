@@ -78,6 +78,6 @@ charts中支持三种配置模型，file模式、chart模式、xAxis+series模�
 2. 使用maven构建jar包，并放在顶层工作目录下
 3. 运行jar，或者直接运行打包后的脚本
 ```java
-java -jar openGUI-v1.0.jar
+ java -jar openGUI-v1.0.jar
 ```
 
