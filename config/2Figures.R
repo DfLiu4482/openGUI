@@ -88,7 +88,7 @@ Palette272 <- c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fd
   }
 
   
-  ggsave(paste0(OutputPath, "/", "SB_Electrofakogram.jpg"), plot = Electrofakogram, width = 24, height = 24, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "SB_Electrofakogram.jpg"), plot = Electrofakogram, width = 24, height = 24, dpi = 320, create.dir = TRUE)
   
 ##  filename: 图片的保存路径和文件名。使用 paste0 函数动态构建，包括指定的输出路径 (OutputPath)，样本名 (SampleName)，和固定的文件名后缀 "_SB_Electrofakogram.jpg"。这意味着每个样本的文件名都是唯一的，基于它的样本名。
 
@@ -150,7 +150,7 @@ Palette272 <- c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fd
 #   综上所述，这段代码生成了一个位点总结图，以条形图和点图的形式同时显示每个位点的 TotalReads 和  UniqueHaps。通过使用经典主题、自定义标签和标题，以及坐标轴翻转，这个图形提供了对位点数据的清晰可视化表示。
 
   
-  ggsave(paste0(OutputPath, "/", "LocusSummaryPlot.jpg"), plot = LocusSummaryPlot, width = 9, height = 24, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "LocusSummaryPlot.jpg"), plot = LocusSummaryPlot, width = 9, height = 24, dpi = 320, create.dir = TRUE)
   
   #Plot length-based bar plot
   ElectroFakogram_LB <- ggplot(filter(AlleleSummary, TotalReads >= GlobalRDT), aes(Allele, TotalReads)) + geom_bar(stat = "identity") + facet_wrap(~Locus, scales = "free_x") + theme_classic() + theme(axis.text.x = element_blank(), axis.line.x = element_blank(), axis.ticks.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.title.x = element_text(vjust = 0.5, hjust = 0.5)) + labs(title = paste0(SampleName, " Length-based Barplot"), y = "Read Depth", x = "Alleles") + geom_text(aes(x = Allele, y = (0-(max(TotalReads)/10)), label = round(Allele, 1), angle = 90, hjust = 0.5, vjust = 0.5), size = 2) + geom_hline(yintercept = 0) + scale_y_continuous(expand = c(0.15, 0))
@@ -204,7 +204,7 @@ Palette272 <- c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fd
 
 #   综上所述，这段代码生成了一个基于长度的条形图，显示了满足 GlobalRDT 阈值的每个 Locus 的 Allele 和 TotalReads。通过使用经典主题、自定义标签和标题，以及坐标轴的详细调整，这个图形提供了对读取深度数据的清晰可视化表示。
   
-  ggsave(paste0(OutputPath, "/", "LB_ElectroFakogram.jpg"), plot = ElectroFakogram_LB, width = 24, height = 24, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "LB_ElectroFakogram.jpg"), plot = ElectroFakogram_LB, width = 24, height = 24, dpi = 320, create.dir = TRUE)
 }
 
 
@@ -247,7 +247,7 @@ STRaitRazorFigures_byType <- function(STRaitRazorIO, AlleleSummary, LocusSummary
     Electrofakogram <- ggplot(filter(STRaitRazorIO, Marker_Type == "STR"), aes(Allele, HaplotypeSum, fill = as.factor(LocusRank))) + geom_bar(stat = "identity", show.legend = FALSE) + facet_wrap(~Locus, scales = "free_x") + theme_classic() + scale_fill_manual(values = Palette272) + theme(axis.text.x = element_blank(), axis.line.x = element_blank(), axis.ticks.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.title.x = element_text(vjust = 0.5, hjust = 0.5)) + labs(title = paste0(SampleName, " Sequence-based STR Barplot"), y = "Read Depth", x = "Alleles") + geom_text(aes(x = Allele, y = (0-(max(HaplotypeSum)/10)), label = round(Allele, 1), angle = 90, hjust = 0.5, vjust = 0.5), size = 2) + geom_hline(yintercept = 0) + scale_y_continuous(expand = c(0.15, 0))      
   }
   
-  ggsave(paste0(OutputPath, "/", "SB_STR_Electrofakogram.jpg"), plot = Electrofakogram, width = 12, height = 12, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "SB_STR_Electrofakogram.jpg"), plot = Electrofakogram, width = 12, height = 12, dpi = 320,create.dir = TRUE)
   
   LocusSummaryPlot <- ggplot(LocusSummary) + geom_bar(aes(reorder(Locus, TotalReads), TotalReads), stat = "identity", show.legend = FALSE) + geom_point(aes(reorder(Locus, TotalReads), UniqueHaps)) + theme_classic() + theme(plot.title = element_text(hjust = 0.5), axis.text.x = element_text(hjust = 0.5, vjust = 0.5), axis.text.y = element_text(size = 3)) + labs(title = paste0(SampleName," Locus Summary"), x = "Locus", y = "Total Reads") + coord_flip() + scale_y_continuous(expand = c(0, 0))
   
@@ -268,7 +268,7 @@ STRaitRazorFigures_byType <- function(STRaitRazorIO, AlleleSummary, LocusSummary
 #   总结来说，两段代码的主要区别在于第一段代码中y轴文本的大小被明确设置为3，而第二段代码则使用默认的文本大小。这种差异影响的是图表的视觉呈现，特别是y轴标签的可读性。
   
   
-  ggsave(paste0(OutputPath, "/", "LocusSummaryPlot.jpg"), plot = LocusSummaryPlot, width = 9, height = 12, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "LocusSummaryPlot.jpg"), plot = LocusSummaryPlot, width = 9, height = 12, dpi = 320, create.dir = TRUE)
   
   ElectroFakogram_LB <- ggplot(filter(AlleleSummary, TotalReads >= GlobalRDT, Marker_Type == "STR"), aes(Allele, TotalReads)) + geom_bar(stat = "identity") + facet_wrap(~Locus, scales = "free_x") + theme_classic() + theme(axis.text.x = element_blank(), axis.line.x = element_blank(), axis.ticks.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.title.x = element_text(vjust = 0.5, hjust = 0.5)) + labs(title = paste0(SampleName, " Length-based STR Barplot"), y = "Read Depth", x = "Alleles") + geom_text(aes(x = Allele, y = (0-(max(TotalReads)/10)), label = round(Allele, 1), angle = 90, hjust = 0.5, vjust = 0.5), size = 2) + geom_hline(yintercept = 0) + scale_y_continuous(expand = c(0.15, 0))
 
@@ -302,7 +302,7 @@ STRaitRazorFigures_byType <- function(STRaitRazorIO, AlleleSummary, LocusSummary
   
   
   
-  ggsave(paste0(OutputPath, "/", "LB_STR_ElectroFakogram.jpg"), plot = ElectroFakogram_LB, width = 12, height = 12, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "LB_STR_ElectroFakogram.jpg"), plot = ElectroFakogram_LB, width = 12, height = 12, dpi = 320, create.dir = TRUE)
   
   #Save SNP figures 
   
@@ -357,7 +357,7 @@ STRaitRazorFigures_byType <- function(STRaitRazorIO, AlleleSummary, LocusSummary
     Electrofakogram <- ggplot(filter(STRaitRazorIO, Marker_Type == "SNP"), aes(Allele, HaplotypeSum, fill = as.factor(LocusRank))) + geom_bar(stat = "identity", show.legend = FALSE) + facet_wrap(~Locus) + theme_classic() + scale_fill_manual(values = Palette272) + theme(axis.text.x = element_blank(), axis.line.x = element_blank(), axis.ticks.x = element_blank(), plot.title = element_text(hjust = 0.5), axis.title.x = element_text(vjust = 0.5, hjust = 0.5)) + labs(title = paste0(SampleName, " Sequence-based SNP Barplot"), y = "Read Depth", x = "Alleles") + geom_text(aes(x = Allele, y = (0-(max(HaplotypeSum)/10)), label = round(Allele, 1), angle = 90, hjust = 0.5, vjust = 0.5), size = 2) + geom_hline(yintercept = 0) + scale_y_continuous(expand = c(0.15,0)) + scale_x_continuous(limits = c(-20, 20))      
   }
   
-  ggsave(paste0(OutputPath, "/", "SB_SNP_Electrofakogram.jpg"), plot = Electrofakogram, width = 24, height = 24, dpi = 320)
+  ggsave(paste0(OutputPath, "/", "SB_SNP_Electrofakogram.jpg"), plot = Electrofakogram, width = 24, height = 24, dpi = 320, create.dir = TRUE)
   
 }
  
