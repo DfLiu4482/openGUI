@@ -14,6 +14,242 @@ https://github.com/Ahhgust/STRaitRazor
 
 参考的页面为STRaitRazorOnline
 https://github.com/ExpectationsManaged/STRaitRazorOnline
+
+配置文件
+```json
+[
+    {
+        "order": 0,
+        "input" : [
+            {
+                "name": "fileConfig",
+                "type": "file",
+                "param": "-c"
+            },
+            {
+                "name": "fq",
+                "type": "file",
+                "param": ""
+            }
+        ]
+    },
+    {
+        "order": 1,
+        "execFile": "/Users/defuliu/workspace/IdeaProjects/openGUI/config/str8rzr_osX_M1",
+        "input" : [
+            {
+                "name": "fileConfig",
+                "type": "file",
+                "param": "-c",
+                "value": ""
+            },
+            {
+                "name": "fq",
+                "type": "file",
+                "param": "",
+                "value": ""
+            },
+            {
+                "name": "allsequences.txt",
+                "type": "path",
+                "param":">",
+                "value":"result/allsequences.txt"
+            }
+
+        ],
+        "output": "result",
+        "table": {
+            "path": "result/allsequences.txt",
+            "blockWeight": 12
+        },
+        "result": {
+            "path": "result/allsequences.txt",
+            "blockWeight": 3,
+            "blockHeight": 3
+        }
+    },
+    {
+        "order": 2,
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/1output_data.R",
+        "input" : [
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"result/allsequences.txt"
+            },
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "configtwo",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/HaplotypeDatabase.csv"
+            }
+        ],
+        "output": ""
+    },
+    {
+        "order": 3,
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2Figures.R",
+        "input" : [
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/AlleleSummary.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/LocusSummary.tsv"
+            }
+        ],
+        "output": "",
+        "result": {
+            "path": "allpic",
+            "blockWeight": 3,
+            "blockHeight": 3
+        }
+    },
+    {
+        "order": 4,
+        "execFile": "Rscript /Users/defuliu/workspace/IdeaProjects/openGUI/config/2data_echarts.R",
+        "input" : [
+            {
+                "name": "",
+                "type": "path",
+                "param":"",
+                "value":"OUTPUT_DATA/STRaitRazorIO.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/AlleleSummary.tsv"
+            },
+            {
+                "name": "",
+                "type": "path",
+                "param": "",
+                "value": "OUTPUT_DATA/LocusSummary.tsv"
+            },
+            {
+                "name": "configone",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/STRaitRazorAnalysisConfig.csv"
+            },
+            {
+                "name": "chartjson",
+                "type": "path",
+                "param": "",
+                "value": "/Users/defuliu/workspace/IdeaProjects/openGUI/data/3Electrofakogram.json"
+            }
+        ],
+        "output": "",
+        "charts": [
+            {
+                "file": "echarts/data_for_Electrofakogram",
+                "blockWeight": 2,
+                "blockHeight": 2
+            },
+            {
+                "blockWeight": 6,
+                "blockHeight": 20,
+                "chart": {
+                    "title": {
+                        "text": "figuretest Locus Summary",
+                        "left": "center"
+                    },
+                    "tooltip": {
+                        "trigger": "axis",
+                        "axisPointer": {
+                            "type": "shadow"
+                        }
+                    },
+                    "toolbox": {
+                        "show": true,
+                        "feature": {
+                            "saveAsImage":{
+                                "type": "png"
+                            },
+                            "magicType": {
+                                "type": ["line", "bar"]
+                            }
+                        }
+                    },
+                    "xAxis": {
+                        "type": "value",
+                        "name": "Total Reads",
+                        "nameLocation": "middle",
+                        "nameGap": 20,
+                        "nameTextStyle": {
+                            "fontSize": 24
+                        }
+                    },
+                    "yAxis": {
+                        "type": "category",
+                        "data": "${echarts/data_for_LocusSummary.txt#0}",
+                        "axisLabel": {
+                            "interval": 0
+                        },
+                        "name": "Locus",
+                        "nameLocation": "center",
+                        "nameRotate": 90,
+                        "nameGap": 100,
+                        "nameTextStyle": {
+                            "fontSize": 24
+                        }
+                    },
+                    "series": [
+                        {
+                            "name": "Total Reads",
+                            "type": "bar",
+                            "data": "${echarts/data_for_LocusSummary.txt#2}",
+                            "label": {
+                                "show": true,
+                                "position": "inside"
+                            }
+                        },
+                        {
+                            "name": "Unique Haps",
+                            "type": "scatter",
+                            "yAxisIndex": 0,
+                            "data": "${echarts/data_for_LocusSummary.txt#1}",
+                            "symbolSize": 10,
+                            "label": {
+                                "show": true,
+                                "position": "right"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
+```
+效果图
+![效果图](data/img.png)
+
 ### config
 在config/config.json文件中，配置对应的脚本或者命令行工具
 具体元素说明如下：
